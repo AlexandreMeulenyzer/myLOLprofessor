@@ -3,6 +3,7 @@ import { clsx } from "clsx";
 
 const NAV_ITEMS = [
   { to: "/", label: "Dashboard", icon: "◆", end: true },
+  { to: "/accounts", label: "Comptes", icon: "👤" },
   { to: "/profile", label: "Profil", icon: "☺" },
   { to: "/champion-select", label: "Sélection", icon: "⚔" },
   { to: "/team-analysis", label: "Équipes", icon: "⚑" },

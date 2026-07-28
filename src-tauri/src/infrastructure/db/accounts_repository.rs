@@ -2,6 +2,7 @@ use rusqlite::{params, Connection};
 use serde::Serialize;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AccountRecord {
     pub puuid: String,
     pub game_name: String,

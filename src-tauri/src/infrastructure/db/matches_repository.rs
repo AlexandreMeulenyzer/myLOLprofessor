@@ -2,6 +2,7 @@ use rusqlite::{params, Connection};
 use serde::Serialize;
 
 #[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct MatchParticipantRecord {
     pub match_id: String,
     pub queue_id: i64,
@@ -66,6 +67,7 @@ pub fn upsert_match_participant(
 }
 
 #[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct MatchHistoryEntry {
     pub match_id: String,
     pub queue_id: i64,

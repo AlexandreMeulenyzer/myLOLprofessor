@@ -2,6 +2,7 @@ import { createHashRouter } from "react-router-dom";
 
 import { AppShell } from "@/shared/components/layout/AppShell";
 import { NotFoundPage } from "@/app/NotFoundPage";
+import { AccountsPage } from "@/features/accounts/AccountsPage";
 import { DashboardPage } from "@/features/dashboard/DashboardPage";
 import { ProfilePage } from "@/features/profile/ProfilePage";
 import { ChampionSelectPage } from "@/features/champion-select/ChampionSelectPage";
@@ -30,6 +31,7 @@ export const router = createHashRouter([
     element: <AppShell />,
     children: [
       { index: true, element: <DashboardPage /> },
+      { path: "accounts", element: <AccountsPage /> },
       { path: "profile", element: <ProfilePage /> },
       { path: "champion-select", element: <ChampionSelectPage /> },
       { path: "team-analysis", element: <TeamAnalysisPage /> },

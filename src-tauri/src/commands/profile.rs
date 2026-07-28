@@ -6,6 +6,7 @@ use crate::domain::mmr_estimate;
 use crate::infrastructure::riot_api::Platform;
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProfileSummary {
     pub puuid: String,
     pub profile_icon_id: i64,
@@ -15,6 +16,7 @@ pub struct ProfileSummary {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct LeagueEntrySummary {
     pub queue_type: String,
     pub tier: String,
@@ -29,6 +31,7 @@ pub struct LeagueEntrySummary {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ChampionMasterySummary {
     pub champion_id: i64,
     pub champion_level: i64,
