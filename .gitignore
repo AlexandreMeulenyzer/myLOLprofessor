@@ -1,0 +1,47 @@
+# Node
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+
+# Rust
+src-tauri/target/
+**/*.rs.bk
+Cargo.lock.bak
+
+# Tauri build artifacts
+src-tauri/gen/
+src-tauri/WixTools/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Test artifacts
+coverage/
+playwright-report/
+test-results/
+
+# Local databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Husky
+.husky/_
