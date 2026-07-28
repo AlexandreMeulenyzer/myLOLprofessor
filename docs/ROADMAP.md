@@ -7,110 +7,110 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 0 — Fondations & qualité
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Scaffold projet | Structure monorepo (`src`, `src-tauri`, `docs`, `assets`, `scripts`, `tests`, `.github`) | 🔄 |
-| Scaffold projet | Frontend Vite + React + TypeScript + Tailwind | ⏳ |
-| Scaffold projet | Shell Tauri v2 (fenêtre principale + fenêtre overlay) | ⏳ |
-| Qualité | ESLint + Prettier + Husky + lint-staged | ⏳ |
-| Qualité | Tests unitaires frontend (Vitest) | ⏳ |
-| Qualité | Tests unitaires backend (`cargo test`) | ⏳ |
-| Qualité | Tests E2E (Playwright) | ⏳ |
-| CI/CD | Pipeline GitHub Actions (lint, test, build) | ⏳ |
-| CI/CD | Release automatisée (tauri-action, artefacts Windows) | ⏳ |
-| Documentation | README, ARCHITECTURE, ROADMAP, CONTRIBUTING | 🔄 |
+| Feature         | Tâche                                                                                    | Statut                                                  |
+| --------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Scaffold projet | Structure monorepo (`src`, `src-tauri`, `docs`, `assets`, `scripts`, `tests`, `.github`) | ✅                                                      |
+| Scaffold projet | Frontend Vite + React + TypeScript + Tailwind                                            | ✅                                                      |
+| Scaffold projet | Shell Tauri v2 (fenêtre principale + fenêtre overlay)                                    | ✅                                                      |
+| Qualité         | ESLint + Prettier + Husky + lint-staged                                                  | ✅                                                      |
+| Qualité         | Tests unitaires frontend (Vitest)                                                        | ✅ (couverture initiale, a etoffer au fil des features) |
+| Qualité         | Tests unitaires backend (`cargo test`)                                                   | ✅ (couverture initiale, a etoffer au fil des features) |
+| Qualité         | Tests E2E (Playwright)                                                                   | ⏳                                                      |
+| CI/CD           | Pipeline GitHub Actions (lint, test, build)                                              | ⏳                                                      |
+| CI/CD           | Release automatisée (tauri-action, artefacts Windows)                                    | ⏳                                                      |
+| Documentation   | README, ARCHITECTURE, ROADMAP, CONTRIBUTING                                              | ✅                                                      |
 
 ## Epic 1 — Détection & état du client
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Connecteur LCU | Découverte du lockfile multi-plateforme | ⏳ |
-| Connecteur LCU | Client REST authentifié (TLS auto-signé) | ⏳ |
-| Connecteur LCU | Flux d'événements gameflow (WebSocket WAMP) | ⏳ |
-| Connecteur LCU | Fallback polling si WebSocket indisponible | ⏳ |
-| Machine à états | Modélisation des phases (Lobby → EndOfGame) | ⏳ |
-| Frontend | Adaptation automatique de l'UI selon la phase | ⏳ |
-| Live Client Data | Poller `localhost:2999` pendant la partie | ⏳ |
+| Feature          | Tâche                                                                           | Statut |
+| ---------------- | ------------------------------------------------------------------------------- | ------ |
+| Connecteur LCU   | Découverte du processus client (port + token, multi-plateforme)                 | ✅     |
+| Connecteur LCU   | Client REST authentifié (TLS auto-signé)                                        | ✅     |
+| Connecteur LCU   | Flux d'événements gameflow (WebSocket WAMP)                                     | ✅     |
+| Connecteur LCU   | Fallback polling adaptatif si WebSocket indisponible                            | ✅     |
+| Machine à états  | Modélisation des phases (Lobby → EndOfGame)                                     | ✅     |
+| Frontend         | Adaptation automatique de l'UI selon la phase (badge de phase, sync temps réel) | ✅     |
+| Live Client Data | Poller `localhost:2999` pendant la partie                                       | ⏳     |
 
 ## Epic 2 — Comptes & profil
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Onboarding | Saisie Riot ID + région + clé API personnelle | ⏳ |
-| Onboarding | Validation via `account-v1` | ⏳ |
-| Stockage sécurisé | Clé API dans le trousseau OS | ⏳ |
-| Multi-comptes | Ajout / suppression / bascule de compte | ⏳ |
-| Multi-comptes | Synchronisation périodique des comptes liés | ⏳ |
-| Profil | Rang, LP, WR, niveau, icône | ⏳ |
-| Profil | Champion principal, statistiques agrégées | ⏳ |
-| Profil | MMR estimé (heuristique documentée) | ⏳ |
+| Feature           | Tâche                                         | Statut |
+| ----------------- | --------------------------------------------- | ------ |
+| Onboarding        | Saisie Riot ID + région + clé API personnelle | ⏳     |
+| Onboarding        | Validation via `account-v1`                   | ⏳     |
+| Stockage sécurisé | Clé API dans le trousseau OS                  | ⏳     |
+| Multi-comptes     | Ajout / suppression / bascule de compte       | ⏳     |
+| Multi-comptes     | Synchronisation périodique des comptes liés   | ⏳     |
+| Profil            | Rang, LP, WR, niveau, icône                   | ⏳     |
+| Profil            | Champion principal, statistiques agrégées     | ⏳     |
+| Profil            | MMR estimé (heuristique documentée)           | ⏳     |
 
 ## Epic 3 — Champion Select Assistant
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Moteur de stats | Ingestion de matchs (`match-v5`) en tâche de fond | ⏳ |
-| Moteur de stats | Agrégation winrate/pickrate/banrate par champion/rôle/elo/patch | ⏳ |
-| Moteur de stats | Agrégation runes/items/ordre de compétences/sorts | ⏳ |
-| Moteur de stats | Filtrage par elo, région, patch | ⏳ |
-| Assistant | Détection automatique de l'entrée en champion select | ⏳ |
-| Assistant | Recommandations (runes/build/skills/summoners) | ⏳ |
-| Assistant | Contres, synergies, difficulté, astuces (fallback Data Dragon) | ⏳ |
-| Assistant | Temps moyen de partie par champion | ⏳ |
+| Feature         | Tâche                                                           | Statut |
+| --------------- | --------------------------------------------------------------- | ------ |
+| Moteur de stats | Ingestion de matchs (`match-v5`) en tâche de fond               | ⏳     |
+| Moteur de stats | Agrégation winrate/pickrate/banrate par champion/rôle/elo/patch | ⏳     |
+| Moteur de stats | Agrégation runes/items/ordre de compétences/sorts               | ⏳     |
+| Moteur de stats | Filtrage par elo, région, patch                                 | ⏳     |
+| Assistant       | Détection automatique de l'entrée en champion select            | ⏳     |
+| Assistant       | Recommandations (runes/build/skills/summoners)                  | ⏳     |
+| Assistant       | Contres, synergies, difficulté, astuces (fallback Data Dragon)  | ⏳     |
+| Assistant       | Temps moyen de partie par champion                              | ⏳     |
 
 ## Epic 4 — Analyse d'équipe
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Scan des joueurs | Récupération des 10 puuids via session LCU | ⏳ |
-| Scan des joueurs | Rang / WR / pool de champions / forme récente par joueur | ⏳ |
-| Heuristiques | Détection d'autofill estimée | ⏳ |
-| Heuristiques | Score de force, risque, menaces, avantages | ⏳ |
-| Composition | Scaling early/mid/late, teamfight/splitpush, CC, frontline, AP/AD | ⏳ |
+| Feature          | Tâche                                                             | Statut |
+| ---------------- | ----------------------------------------------------------------- | ------ |
+| Scan des joueurs | Récupération des 10 puuids via session LCU                        | ⏳     |
+| Scan des joueurs | Rang / WR / pool de champions / forme récente par joueur          | ⏳     |
+| Heuristiques     | Détection d'autofill estimée                                      | ⏳     |
+| Heuristiques     | Score de force, risque, menaces, avantages                        | ⏳     |
+| Composition      | Scaling early/mid/late, teamfight/splitpush, CC, frontline, AP/AD | ⏳     |
 
 ## Epic 5 — Partie en cours
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Overlay | Fenêtre transparente, déplaçable, redimensionnable | ⏳ |
-| Overlay | Timers objectifs (dragon/héraut/baron/void) | ⏳ |
-| Overlay | Or estimé, power spikes | ⏳ |
-| Overlay | Conseils contextuels | ⏳ |
-| Overlay | Widgets activables/désactivables individuellement | ⏳ |
+| Feature | Tâche                                              | Statut |
+| ------- | -------------------------------------------------- | ------ |
+| Overlay | Fenêtre transparente, déplaçable, redimensionnable | ⏳     |
+| Overlay | Timers objectifs (dragon/héraut/baron/void)        | ⏳     |
+| Overlay | Or estimé, power spikes                            | ⏳     |
+| Overlay | Conseils contextuels                               | ⏳     |
+| Overlay | Widgets activables/désactivables individuellement  | ⏳     |
 
 ## Epic 6 — Historique & progression
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Historique | Liste des parties, filtres (champion/queue/résultat/date) | ⏳ |
-| Historique | Recherche | ⏳ |
-| Graphiques | Progression LP, progression WR | ⏳ |
-| Graphiques | Champion préféré, heatmap d'activité | ⏳ |
-| Dashboard | Résumé, dernières parties, top champions | ⏳ |
+| Feature    | Tâche                                                     | Statut |
+| ---------- | --------------------------------------------------------- | ------ |
+| Historique | Liste des parties, filtres (champion/queue/résultat/date) | ⏳     |
+| Historique | Recherche                                                 | ⏳     |
+| Graphiques | Progression LP, progression WR                            | ⏳     |
+| Graphiques | Champion préféré, heatmap d'activité                      | ⏳     |
+| Dashboard  | Résumé, dernières parties, top champions                  | ⏳     |
 
 ## Epic 7 — Objectifs & coaching
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Objectifs | Définition (rang cible, WR cible, nombre de parties) | ⏳ |
-| Objectifs | Suivi automatique de la progression | ⏳ |
-| Coaching | Analyse post-partie automatique | ⏳ |
-| Coaching | Points forts / faibles / conseils / priorités | ⏳ |
+| Feature   | Tâche                                                | Statut |
+| --------- | ---------------------------------------------------- | ------ |
+| Objectifs | Définition (rang cible, WR cible, nombre de parties) | ⏳     |
+| Objectifs | Suivi automatique de la progression                  | ⏳     |
+| Coaching  | Analyse post-partie automatique                      | ⏳     |
+| Coaching  | Points forts / faibles / conseils / priorités        | ⏳     |
 
 ## Epic 8 — Comparaison & recherche
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Comparaison | Joueurs, champions, builds, historiques | ⏳ |
-| Recherche globale | Invocateurs, champions, objets, runes, sorts, patch | ⏳ |
+| Feature           | Tâche                                               | Statut |
+| ----------------- | --------------------------------------------------- | ------ |
+| Comparaison       | Joueurs, champions, builds, historiques             | ⏳     |
+| Recherche globale | Invocateurs, champions, objets, runes, sorts, patch | ⏳     |
 
 ## Epic 9 — Personnalisation & notifications
 
-| Feature | Tâche | Statut |
-|---|---|---|
-| Thèmes | Dark, OLED, Light, couleurs d'accent | ⏳ |
-| Disposition | Widgets, fenêtres, raccourcis clavier | ⏳ |
-| Notifications | Partie trouvée, champion select, patch, promo, victoire/défaite, objectifs | ⏳ |
+| Feature       | Tâche                                                                      | Statut |
+| ------------- | -------------------------------------------------------------------------- | ------ |
+| Thèmes        | Dark, OLED, Light, couleurs d'accent                                       | ⏳     |
+| Disposition   | Widgets, fenêtres, raccourcis clavier                                      | ⏳     |
+| Notifications | Partie trouvée, champion select, patch, promo, victoire/défaite, objectifs | ⏳     |
 
 ## Backlog / améliorations futures
 
