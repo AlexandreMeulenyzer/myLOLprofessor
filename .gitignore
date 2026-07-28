@@ -45,3 +45,7 @@ test-results/
 
 # Husky
 .husky/_
+*.tsbuildinfo
+.tsbuild/
+/vite.config.js
+/vite.config.d.ts

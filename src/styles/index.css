@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter Variable", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+
+  /* Palette de marque Wardstone : bleu profond + accent turquoise, neutre
+     pense pour un fond glassmorphism sombre par defaut. */
+  --color-surface-0: #0b0e14;
+  --color-surface-1: #11151d;
+  --color-surface-2: #171c27;
+  --color-surface-3: #1f2531;
+  --color-border-subtle: rgb(255 255 255 / 8%);
+
+  --color-accent-50: #eefcf9;
+  --color-accent-200: #a6ecdf;
+  --color-accent-400: #37cfb4;
+  --color-accent-500: #1fb69c;
+  --color-accent-600: #17937d;
+
+  --color-win: #3ecf8e;
+  --color-loss: #f2545b;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-surface-0: #f4f6f9;
+  --color-surface-1: #ffffff;
+  --color-surface-2: #eef1f6;
+  --color-surface-3: #e3e8f0;
+  --color-border-subtle: rgb(15 23 42 / 8%);
+}
+
+:root[data-theme="oled"] {
+  color-scheme: dark;
+  --color-surface-0: #000000;
+  --color-surface-1: #050505;
+  --color-surface-2: #0c0c0c;
+  --color-surface-3: #141414;
+  --color-border-subtle: rgb(255 255 255 / 6%);
+}
+
+:root[data-accent="violet"] {
+  --color-accent-400: #a78bfa;
+  --color-accent-500: #8b5cf6;
+  --color-accent-600: #7c3aed;
+}
+
+:root[data-accent="amber"] {
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #f59e0b;
+  --color-accent-600: #d97706;
+}
+
+:root[data-accent="rose"] {
+  --color-accent-400: #fb7185;
+  --color-accent-500: #f43f5e;
+  --color-accent-600: #e11d48;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-surface-0);
+  color-scheme: dark;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Effet "acrylic" leger utilise par les panneaux flottants et l'overlay. */
+.glass-panel {
+  background: color-mix(in oklab, var(--color-surface-1) 78%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.overlay-transparent {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-3);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
