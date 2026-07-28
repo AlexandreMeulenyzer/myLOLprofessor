@@ -70,13 +70,13 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 5 — Partie en cours
 
-| Feature | Tâche                                              | Statut |
-| ------- | -------------------------------------------------- | ------ |
-| Overlay | Fenêtre transparente, déplaçable, redimensionnable | ⏳     |
-| Overlay | Timers objectifs (dragon/héraut/baron/void)        | ⏳     |
-| Overlay | Or estimé, power spikes                            | ⏳     |
-| Overlay | Conseils contextuels                               | ⏳     |
-| Overlay | Widgets activables/désactivables individuellement  | ⏳     |
+| Feature | Tâche                                              | Statut                                                     |
+| ------- | -------------------------------------------------- | ---------------------------------------------------------- |
+| Overlay | Fenêtre transparente, déplaçable, redimensionnable | 🔄 (fenêtre créée, glisser-déposer et contenu à finaliser) |
+| Overlay | Timers objectifs (dragon/héraut/baron/void)        | ⏳                                                         |
+| Overlay | Or estimé, power spikes                            | ⏳                                                         |
+| Overlay | Conseils contextuels                               | ⏳                                                         |
+| Overlay | Widgets activables/désactivables individuellement  | ⏳                                                         |
 
 ## Epic 6 — Historique & progression
 
