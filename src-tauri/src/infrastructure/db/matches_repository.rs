@@ -131,6 +131,19 @@ pub fn known_match_ids(conn: &Connection, puuid: &str) -> rusqlite::Result<Vec<S
     rows.collect()
 }
 
+/// Nombre de parties synchronisees localement jouees depuis une date donnee
+/// (utilise par le suivi d'objectifs "nombre de parties").
+pub fn count_since(conn: &Connection, puuid: &str, since: &str) -> rusqlite::Result<i64> {
+    conn.query_row(
+        "SELECT COUNT(*)
+         FROM match_participants mp
+         JOIN matches m ON m.match_id = mp.match_id
+         WHERE mp.puuid = ?1 AND m.played_at >= ?2",
+        params![puuid, since],
+        |row| row.get(0),
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

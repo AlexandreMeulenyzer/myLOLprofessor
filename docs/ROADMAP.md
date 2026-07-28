@@ -97,12 +97,12 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 7 — Objectifs & coaching
 
-| Feature   | Tâche                                                | Statut |
-| --------- | ---------------------------------------------------- | ------ |
-| Objectifs | Définition (rang cible, WR cible, nombre de parties) | ⏳     |
-| Objectifs | Suivi automatique de la progression                  | ⏳     |
-| Coaching  | Analyse post-partie automatique                      | ⏳     |
-| Coaching  | Points forts / faibles / conseils / priorités        | ⏳     |
+| Feature   | Tâche                                                | Statut                                                                           |
+| --------- | ---------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Objectifs | Définition (rang cible, WR cible, nombre de parties) | ✅                                                                               |
+| Objectifs | Suivi automatique de la progression                  | ✅ (recalculée à chaque consultation de la page, marquage "atteint" automatique) |
+| Coaching  | Analyse post-partie automatique                      | ⏳                                                                               |
+| Coaching  | Points forts / faibles / conseils / priorités        | ⏳                                                                               |
 
 ## Epic 8 — Comparaison & recherche
 

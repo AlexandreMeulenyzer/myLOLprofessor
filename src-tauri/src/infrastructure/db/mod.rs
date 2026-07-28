@@ -2,6 +2,7 @@ pub mod accounts_repository;
 pub mod league_snapshots_repository;
 pub mod matches_repository;
 pub mod migrations;
+pub mod objectives_repository;
 
 use std::path::Path;
 use std::sync::Mutex;
