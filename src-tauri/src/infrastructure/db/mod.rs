@@ -1,4 +1,5 @@
 pub mod accounts_repository;
+pub mod league_snapshots_repository;
 pub mod matches_repository;
 pub mod migrations;
 

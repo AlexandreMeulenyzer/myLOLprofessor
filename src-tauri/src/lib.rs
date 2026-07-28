@@ -49,6 +49,7 @@ pub fn run() {
             commands::live_game::get_live_game_snapshot,
             commands::overlay::toggle_overlay_window,
             commands::profile::get_profile,
+            commands::profile::get_lp_history,
             commands::riot_api_key::save_riot_api_key,
             commands::riot_api_key::has_riot_api_key,
             commands::riot_api_key::delete_riot_api_key,

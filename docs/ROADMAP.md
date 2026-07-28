@@ -85,13 +85,15 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 6 — Historique & progression
 
-| Feature    | Tâche                                          | Statut                      |
-| ---------- | ---------------------------------------------- | --------------------------- |
-| Historique | Liste des parties, filtres (champion/résultat) | ✅ (filtre date à ajouter)  |
-| Historique | Recherche                                      | ✅ (recherche par champion) |
-| Graphiques | Progression LP, progression WR                 | ⏳                          |
-| Graphiques | Champion préféré, heatmap d'activité           | ⏳                          |
-| Dashboard  | Résumé, dernières parties, top champions       | ✅                          |
+| Feature    | Tâche                                                        | Statut                                               |
+| ---------- | ------------------------------------------------------------ | ---------------------------------------------------- |
+| Historique | Liste des parties, filtres (champion/résultat)               | ✅ (filtre date à ajouter)                           |
+| Historique | Recherche                                                    | ✅ (recherche par champion)                          |
+| Graphiques | Progression LP (instantanés à chaque consultation du profil) | ✅                                                   |
+| Graphiques | Progression WR                                               | ⏳ (backlog — dérivable de l'historique synchronisé) |
+| Graphiques | Champion préféré (pool de champions)                         | ✅                                                   |
+| Graphiques | Heatmap d'activité                                           | ⏳                                                   |
+| Dashboard  | Résumé, dernières parties, top champions                     | ✅                                                   |
 
 ## Epic 7 — Objectifs & coaching
 

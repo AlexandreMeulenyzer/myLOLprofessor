@@ -6,6 +6,7 @@ import { Button } from "@/shared/components/ui/Button";
 import { Card } from "@/shared/components/ui/Card";
 import { useActiveAccountStore } from "@/shared/stores/active-account-store";
 
+import { ChampionPoolChart, LpProgressionChart } from "./HistoryCharts";
 import { useMatchHistory, useSyncMatchHistory } from "./hooks";
 import { queueName } from "./types";
 
@@ -77,6 +78,11 @@ export function HistoryPage() {
             : String(syncHistory.error)}
         </p>
       )}
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <LpProgressionChart puuid={activeAccount.puuid} />
+        <ChampionPoolChart matches={matches ?? []} />
+      </div>
 
       <Card glass className="flex flex-wrap items-center gap-2">
         <input

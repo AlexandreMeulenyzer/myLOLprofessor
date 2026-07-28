@@ -1,8 +1,11 @@
+use chrono::Utc;
 use serde::Serialize;
 use tauri::State;
 
 use crate::app_state::AppState;
 use crate::domain::mmr_estimate;
+use crate::infrastructure::db::league_snapshots_repository::{self, LeagueSnapshotRecord};
+use crate::infrastructure::db::Database;
 use crate::infrastructure::riot_api::Platform;
 
 #[derive(Debug, Serialize)]
@@ -43,6 +46,7 @@ const TOP_CHAMPIONS_LIMIT: usize = 5;
 #[tauri::command]
 pub async fn get_profile(
     state: State<'_, AppState>,
+    db: State<'_, Database>,
     puuid: String,
     platform: String,
 ) -> Result<ProfileSummary, String> {
@@ -80,6 +84,26 @@ pub async fn get_profile(
     top_champions.sort_by(|a, b| b.champion_points.cmp(&a.champion_points));
     top_champions.truncate(TOP_CHAMPIONS_LIMIT);
 
+    let captured_at = Utc::now().to_rfc3339();
+    {
+        let conn = db.lock();
+        for entry in &league_entries {
+            let _ = league_snapshots_repository::record_snapshot(
+                &conn,
+                league_snapshots_repository::LeagueSnapshotInput {
+                    puuid: &puuid,
+                    queue_type: &entry.queue_type,
+                    tier: &entry.tier,
+                    rank: &entry.rank,
+                    league_points: entry.league_points,
+                    wins: entry.wins,
+                    losses: entry.losses,
+                    captured_at: &captured_at,
+                },
+            );
+        }
+    }
+
     let league_entries = league_entries
         .into_iter()
         .map(|entry| {
@@ -114,4 +138,18 @@ pub async fn get_profile(
         league_entries,
         top_champions,
     })
+}
+
+/// Historique de progression LP/rang, constitue des instantanes pris a
+/// chaque consultation du profil (voir plus haut). Vide tant que le profil
+/// n'a jamais ete consulte plus d'une fois.
+#[tauri::command]
+pub fn get_lp_history(
+    db: State<'_, Database>,
+    puuid: String,
+    queue_type: String,
+    limit: u32,
+) -> Result<Vec<LeagueSnapshotRecord>, String> {
+    league_snapshots_repository::list_for_puuid(&db.lock(), &puuid, &queue_type, limit)
+        .map_err(|err| err.to_string())
 }
