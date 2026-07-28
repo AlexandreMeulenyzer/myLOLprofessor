@@ -106,10 +106,13 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 8 — Comparaison & recherche
 
-| Feature           | Tâche                                               | Statut |
-| ----------------- | --------------------------------------------------- | ------ |
-| Comparaison       | Joueurs, champions, builds, historiques             | ⏳     |
-| Recherche globale | Invocateurs, champions, objets, runes, sorts, patch | ⏳     |
+| Feature           | Tâche                                                   | Statut                                                                                                                                        |
+| ----------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Comparaison       | Joueurs (profil, rangs, WR, top champions)              | ✅ (résolution d'un Riot ID arbitraire via `resolve_summoner`, comparaison côte à côte)                                                       |
+| Comparaison       | Champions (winrate/pickrate/banrate/KDA/CS/or par rôle) | ✅ (basé sur `stats_engine`, comparaison côte à côte par champion + rôle + patch)                                                             |
+| Comparaison       | Builds, historiques                                     | ⏳ (couvert indirectement par la comparaison champions/joueurs ; pas de vue dédiée build-vs-build ou historique-vs-historique pour l'instant) |
+| Recherche globale | Invocateurs (via l'API Riot)                            | ✅ (`resolve_summoner`)                                                                                                                       |
+| Recherche globale | Champions, objets, runes, sorts d'invocateur, patch     | ✅ (filtrage local des données Data Dragon déjà en cache, aucun appel réseau supplémentaire)                                                  |
 
 ## Epic 9 — Personnalisation & notifications
 

@@ -16,6 +16,8 @@ export interface ChampionRoleStats {
   avgDeaths: number;
   avgAssists: number;
   avgGameDurationSeconds: number;
+  avgCsPerMin: number;
+  avgGoldPerMin: number;
   commonItems: [number, number][];
   commonSummonerSpells: [number, number][];
   commonKeystones: [number, number][];

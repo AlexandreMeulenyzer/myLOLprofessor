@@ -57,6 +57,7 @@ pub fn run() {
             commands::riot_api_key::save_riot_api_key,
             commands::riot_api_key::has_riot_api_key,
             commands::riot_api_key::delete_riot_api_key,
+            commands::search::resolve_summoner,
             commands::static_data::get_latest_patch_version,
             commands::static_data::get_champions,
             commands::static_data::get_champion_detail,

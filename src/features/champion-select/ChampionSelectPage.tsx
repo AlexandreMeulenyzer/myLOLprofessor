@@ -87,8 +87,9 @@ export function ChampionSelectPage() {
             />
           </div>
           <div className="mt-2 text-center text-xs text-slate-500">
-            KDA moyen : {stats.avgKills} / {stats.avgDeaths} / {stats.avgAssists} — sur{" "}
-            {stats.games} partie(s) synchronisée(s)
+            KDA moyen : {stats.avgKills} / {stats.avgDeaths} / {stats.avgAssists} — CS/min{" "}
+            {stats.avgCsPerMin} — Or/min {stats.avgGoldPerMin} — sur {stats.games} partie(s)
+            synchronisée(s)
           </div>
 
           {stats.commonKeystones.length > 0 && (
