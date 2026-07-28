@@ -1,6 +1,9 @@
 import { clsx } from "clsx";
+import { useState } from "react";
 
+import { Button } from "@/shared/components/ui/Button";
 import { Card } from "@/shared/components/ui/Card";
+import { invoke } from "@/shared/lib/tauri-bridge";
 import { useThemeStore, type AccentColor, type ThemeMode } from "@/shared/stores/theme-store";
 
 const THEMES: { value: ThemeMode; label: string }[] = [
@@ -21,6 +24,18 @@ export function SettingsPage() {
   const accent = useThemeStore((state) => state.accent);
   const setTheme = useThemeStore((state) => state.setTheme);
   const setAccent = useThemeStore((state) => state.setAccent);
+  const [overlayOpen, setOverlayOpen] = useState(false);
+  const [overlayError, setOverlayError] = useState<string | null>(null);
+
+  async function handleToggleOverlay() {
+    try {
+      const isOpen = await invoke<boolean>("toggle_overlay_window");
+      setOverlayOpen(isOpen);
+      setOverlayError(null);
+    } catch (error) {
+      setOverlayError(error instanceof Error ? error.message : String(error));
+    }
+  }
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6 py-8">
@@ -60,6 +75,17 @@ export function SettingsPage() {
             />
           ))}
         </div>
+      </Card>
+
+      <Card heading="Overlay in-game" glass>
+        <p className="mb-3 text-sm text-slate-400">
+          Fenêtre flottante affichée automatiquement en partie (Epic 5). Bouton de test manuel en
+          attendant l'implémentation complète des widgets.
+        </p>
+        <Button variant="secondary" size="sm" onClick={handleToggleOverlay}>
+          {overlayOpen ? "Fermer l'overlay" : "Ouvrir l'overlay"}
+        </Button>
+        {overlayError && <p className="mt-2 text-xs text-[var(--color-loss)]">{overlayError}</p>}
       </Card>
 
       <Card heading="Comptes Riot" glass>

@@ -2,8 +2,11 @@ import { Outlet } from "react-router-dom";
 
 import { Sidebar } from "@/shared/components/layout/Sidebar";
 import { Topbar } from "@/shared/components/layout/Topbar";
+import { useGamePhaseSync } from "@/shared/hooks/useGamePhaseSync";
 
 export function AppShell() {
+  useGamePhaseSync();
+
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-surface-0)] text-slate-100">
       <Sidebar />

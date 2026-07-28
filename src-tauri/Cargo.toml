@@ -1,0 +1,62 @@
+[package]
+name = "wardstone"
+version = "0.1.0"
+description = "Compagnon de bureau moderne et modulaire pour League of Legends."
+authors = ["Wardstone Contributors"]
+license = "MIT"
+repository = "https://github.com/AlexandreMeulenyzer/myLOLprofessor"
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "wardstone_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.6.3" }
+
+[dependencies]
+# --- Tauri & plugins ---
+tauri = { version = "2.11.3", features = [] }
+tauri-plugin-log = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-store = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-single-instance = "2"
+
+# --- Async runtime & HTTP ---
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync", "fs", "process"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+futures-util = "0.3"
+
+# --- LCU WebSocket (self-signed local TLS) ---
+tokio-tungstenite = { version = "0.24", features = ["native-tls"] }
+native-tls = "0.2"
+tokio-native-tls = "0.3"
+
+# --- Persistence ---
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+# --- Serialization ---
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# --- Cross-cutting ---
+thiserror = "2"
+anyhow = "1"
+log = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
+moka = { version = "0.12", features = ["future"] }
+sysinfo = "0.32"
+base64 = "0.22"
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["test-util"] }
+
+[profile.release]
+panic = "unwind"
+codegen-units = 1
+lto = true
+opt-level = "s"

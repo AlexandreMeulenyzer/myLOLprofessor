@@ -1,0 +1,16 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Permissions par defaut de la fenetre principale Wardstone",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-create",
+    "core:window:allow-close",
+    "core:event:allow-listen",
+    "core:event:allow-emit",
+    "notification:default",
+    "store:default",
+    "opener:default"
+  ]
+}

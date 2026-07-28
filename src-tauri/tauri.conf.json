@@ -1,0 +1,55 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "Wardstone",
+  "version": "0.1.0",
+  "identifier": "com.wardstone.app",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Wardstone",
+        "url": "/",
+        "width": 1360,
+        "height": 860,
+        "minWidth": 1080,
+        "minHeight": 700,
+        "resizable": true,
+        "center": true,
+        "fullscreen": false,
+        "decorations": true
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'self'",
+        "script-src": "'self'",
+        "style-src": "'self' 'unsafe-inline'",
+        "font-src": "'self' data:",
+        "img-src": "'self' data: asset: https://asset.localhost https://ddragon.leagueoflegends.com https://raw.communitydragon.org https://cdn.communitydragon.org",
+        "connect-src": "'self' ipc: http://ipc.localhost https://*.api.riotgames.com https://ddragon.leagueoflegends.com https://raw.communitydragon.org https://cdn.communitydragon.org http://127.0.0.1:* https://127.0.0.1:* ws://127.0.0.1:* wss://127.0.0.1:*"
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      }
+    },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

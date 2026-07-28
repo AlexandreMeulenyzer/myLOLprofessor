@@ -1,3 +1,4 @@
+import { useGamePhaseSync } from "@/shared/hooks/useGamePhaseSync";
 import { useGamePhaseStore } from "@/shared/stores/game-phase-store";
 import { GAME_PHASE_LABELS } from "@/shared/types/game-phase";
 
@@ -7,6 +8,7 @@ import { GAME_PHASE_LABELS } from "@/shared/types/game-phase";
  * avec l'Epic 5 — voir docs/ROADMAP.md.
  */
 export function OverlayPage() {
+  useGamePhaseSync();
   const phase = useGamePhaseStore((state) => state.phase);
 
   return (
