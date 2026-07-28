@@ -30,7 +30,7 @@ Voir [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 ```bash
 npm run test          # Vitest (frontend)
 cargo test             # depuis src-tauri, tests unitaires + intégration Rust
-npm run test:e2e       # Playwright (nécessite un build de l'app)
+npm run test:e2e       # Playwright (lance automatiquement `npm run dev` ; frontend seul, hors shell Tauri)
 ```
 
 Toute nouvelle fonctionnalité doit être accompagnée de tests unitaires couvrant au minimum

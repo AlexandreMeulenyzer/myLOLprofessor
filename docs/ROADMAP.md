@@ -7,18 +7,18 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 0 — Fondations & qualité
 
-| Feature         | Tâche                                                                                    | Statut                                                                     |
-| --------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Scaffold projet | Structure monorepo (`src`, `src-tauri`, `docs`, `assets`, `scripts`, `tests`, `.github`) | ✅                                                                         |
-| Scaffold projet | Frontend Vite + React + TypeScript + Tailwind                                            | ✅                                                                         |
-| Scaffold projet | Shell Tauri v2 (fenêtre principale + fenêtre overlay)                                    | ✅                                                                         |
-| Qualité         | ESLint + Prettier + Husky + lint-staged                                                  | ✅                                                                         |
-| Qualité         | Tests unitaires frontend (Vitest)                                                        | ✅ (couverture initiale, a etoffer au fil des features)                    |
-| Qualité         | Tests unitaires backend (`cargo test`)                                                   | ✅ (couverture initiale, a etoffer au fil des features)                    |
-| Qualité         | Tests E2E (Playwright)                                                                   | ⏳                                                                         |
-| CI/CD           | Pipeline GitHub Actions (lint, test, build)                                              | ✅                                                                         |
-| CI/CD           | Release automatisée (tauri-action, artefacts Windows/macOS/Linux)                        | ✅ (build en brouillon a chaque tag `v*`, a valider en conditions reelles) |
-| Documentation   | README, ARCHITECTURE, ROADMAP, CONTRIBUTING                                              | ✅                                                                         |
+| Feature         | Tâche                                                                                    | Statut                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Scaffold projet | Structure monorepo (`src`, `src-tauri`, `docs`, `assets`, `scripts`, `tests`, `.github`) | ✅                                                                                |
+| Scaffold projet | Frontend Vite + React + TypeScript + Tailwind                                            | ✅                                                                                |
+| Scaffold projet | Shell Tauri v2 (fenêtre principale + fenêtre overlay)                                    | ✅                                                                                |
+| Qualité         | ESLint + Prettier + Husky + lint-staged                                                  | ✅                                                                                |
+| Qualité         | Tests unitaires frontend (Vitest)                                                        | ✅ (couverture initiale, a etoffer au fil des features)                           |
+| Qualité         | Tests unitaires backend (`cargo test`)                                                   | ✅ (couverture initiale, a etoffer au fil des features)                           |
+| Qualité         | Tests E2E (Playwright)                                                                   | ✅ (navigation, thèmes, widgets, notifications — frontend seul, hors shell Tauri) |
+| CI/CD           | Pipeline GitHub Actions (lint, test, build, E2E)                                         | ✅                                                                                |
+| CI/CD           | Release automatisée (tauri-action, artefacts Windows/macOS/Linux)                        | ✅ (build en brouillon a chaque tag `v*`, a valider en conditions reelles)        |
+| Documentation   | README, ARCHITECTURE, ROADMAP, CONTRIBUTING                                              | ✅                                                                                |
 
 ## Epic 1 — Détection & état du client
 
