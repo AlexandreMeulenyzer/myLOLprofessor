@@ -52,6 +52,8 @@ base64 = "0.22"
 percent-encoding = "2"
 keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
 uuid = { version = "1", features = ["v4", "serde"] }
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-window-state = "2"
 
 [dev-dependencies]
 tokio = { version = "1", features = ["test-util"] }

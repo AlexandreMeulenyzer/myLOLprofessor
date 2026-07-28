@@ -4,7 +4,14 @@ import { useState } from "react";
 import { Button } from "@/shared/components/ui/Button";
 import { Card } from "@/shared/components/ui/Card";
 import { invoke } from "@/shared/lib/tauri-bridge";
+import { useOverlaySettingsStore } from "@/shared/stores/overlay-settings-store";
 import { useThemeStore, type AccentColor, type ThemeMode } from "@/shared/stores/theme-store";
+
+const OVERLAY_WIDGETS = [
+  { key: "showGoldAndLevel", label: "Or & niveau" },
+  { key: "showObjectiveTimers", label: "Timers d'objectifs (Dragon/Baron/Héraut)" },
+  { key: "showContextualTip", label: "Conseil contextuel" },
+] as const;
 
 const THEMES: { value: ThemeMode; label: string }[] = [
   { value: "dark", label: "Sombre" },
@@ -24,6 +31,7 @@ export function SettingsPage() {
   const accent = useThemeStore((state) => state.accent);
   const setTheme = useThemeStore((state) => state.setTheme);
   const setAccent = useThemeStore((state) => state.setAccent);
+  const overlaySettings = useOverlaySettingsStore();
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [overlayError, setOverlayError] = useState<string | null>(null);
 
@@ -79,13 +87,33 @@ export function SettingsPage() {
 
       <Card heading="Overlay in-game" glass>
         <p className="mb-3 text-sm text-slate-400">
-          Fenêtre flottante affichée automatiquement en partie (Epic 5). Bouton de test manuel en
-          attendant l'implémentation complète des widgets.
+          Fenêtre flottante affichée automatiquement en partie. Raccourci clavier global{" "}
+          <kbd className="rounded bg-[var(--color-surface-2)] px-1.5 py-0.5 text-xs">
+            Ctrl+Shift+O
+          </kbd>{" "}
+          pour la basculer manuellement, même quand le client League a le focus.
         </p>
         <Button variant="secondary" size="sm" onClick={handleToggleOverlay}>
           {overlayOpen ? "Fermer l'overlay" : "Ouvrir l'overlay"}
         </Button>
         {overlayError && <p className="mt-2 text-xs text-[var(--color-loss)]">{overlayError}</p>}
+
+        <div className="mt-4 flex flex-col gap-2 border-t border-[var(--color-border-subtle)] pt-4">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            Widgets affichés
+          </p>
+          {OVERLAY_WIDGETS.map((widget) => (
+            <label key={widget.key} className="flex items-center gap-2 text-sm text-slate-300">
+              <input
+                type="checkbox"
+                checked={overlaySettings[widget.key]}
+                onChange={() => overlaySettings.toggleWidget(widget.key)}
+                className="h-4 w-4 rounded border-[var(--color-border-subtle)] accent-[var(--color-accent-500)]"
+              />
+              {widget.label}
+            </label>
+          ))}
+        </div>
       </Card>
 
       <Card heading="Comptes Riot" glass>

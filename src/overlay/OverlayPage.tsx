@@ -3,6 +3,7 @@ import { formatGameClock, formatTimer } from "@/features/live-game/types";
 import { useGamePhaseSync } from "@/shared/hooks/useGamePhaseSync";
 import { invoke } from "@/shared/lib/tauri-bridge";
 import { useGamePhaseStore } from "@/shared/stores/game-phase-store";
+import { useOverlaySettingsStore } from "@/shared/stores/overlay-settings-store";
 import { GAME_PHASE_LABELS } from "@/shared/types/game-phase";
 
 function closeOverlay() {
@@ -13,6 +14,9 @@ export function OverlayPage() {
   useGamePhaseSync();
   const phase = useGamePhaseStore((state) => state.phase);
   const { data: snapshot } = useLiveGameSnapshot();
+  const showGoldAndLevel = useOverlaySettingsStore((state) => state.showGoldAndLevel);
+  const showObjectiveTimers = useOverlaySettingsStore((state) => state.showObjectiveTimers);
+  const showContextualTip = useOverlaySettingsStore((state) => state.showContextualTip);
 
   return (
     <div
@@ -43,35 +47,41 @@ export function OverlayPage() {
               <span className="font-mono text-slate-200">
                 ⏱ {formatGameClock(snapshot.gameTimeSeconds)}
               </span>
-              <span className="text-slate-300">
-                💰 {Math.round(snapshot.activePlayerGold)} · Nv.{snapshot.activePlayerLevel}
-              </span>
+              {showGoldAndLevel && (
+                <span className="text-slate-300">
+                  💰 {Math.round(snapshot.activePlayerGold)} · Nv.{snapshot.activePlayerLevel}
+                </span>
+              )}
             </div>
 
-            <div className="grid grid-cols-3 gap-2 text-center text-xs">
-              <div className="rounded-lg bg-white/5 px-2 py-1.5">
-                <div className="text-slate-400">Dragon</div>
-                <div className="font-mono text-slate-100">
-                  {formatTimer(snapshot.objectiveTimers.nextDragonSeconds)}
+            {showObjectiveTimers && (
+              <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                <div className="rounded-lg bg-white/5 px-2 py-1.5">
+                  <div className="text-slate-400">Dragon</div>
+                  <div className="font-mono text-slate-100">
+                    {formatTimer(snapshot.objectiveTimers.nextDragonSeconds)}
+                  </div>
+                </div>
+                <div className="rounded-lg bg-white/5 px-2 py-1.5">
+                  <div className="text-slate-400">Baron</div>
+                  <div className="font-mono text-slate-100">
+                    {formatTimer(snapshot.objectiveTimers.nextBaronSeconds)}
+                  </div>
+                </div>
+                <div className="rounded-lg bg-white/5 px-2 py-1.5">
+                  <div className="text-slate-400">Héraut</div>
+                  <div className="font-mono text-slate-100">
+                    {snapshot.objectiveTimers.heraldAvailable ? "Disponible" : "—"}
+                  </div>
                 </div>
               </div>
-              <div className="rounded-lg bg-white/5 px-2 py-1.5">
-                <div className="text-slate-400">Baron</div>
-                <div className="font-mono text-slate-100">
-                  {formatTimer(snapshot.objectiveTimers.nextBaronSeconds)}
-                </div>
-              </div>
-              <div className="rounded-lg bg-white/5 px-2 py-1.5">
-                <div className="text-slate-400">Héraut</div>
-                <div className="font-mono text-slate-100">
-                  {snapshot.objectiveTimers.heraldAvailable ? "Disponible" : "—"}
-                </div>
-              </div>
-            </div>
+            )}
 
-            <p className="rounded-lg bg-[var(--color-accent-500)]/10 px-2 py-1.5 text-xs text-[var(--color-accent-400)]">
-              {snapshot.contextualTip}
-            </p>
+            {showContextualTip && (
+              <p className="rounded-lg bg-[var(--color-accent-500)]/10 px-2 py-1.5 text-xs text-[var(--color-accent-400)]">
+                {snapshot.contextualTip}
+              </p>
+            )}
           </>
         )}
       </div>

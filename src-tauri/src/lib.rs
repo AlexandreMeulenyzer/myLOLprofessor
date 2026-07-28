@@ -7,6 +7,7 @@ mod stats_engine;
 use std::sync::Arc;
 
 use tauri::{Listener, Manager};
+use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
 
 use app_state::AppState;
 use domain::GamePhase;
@@ -36,6 +37,31 @@ pub fn run() {
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_opener::init())
+        .plugin(
+            tauri_plugin_window_state::Builder::default()
+                .with_state_flags(
+                    tauri_plugin_window_state::StateFlags::SIZE
+                        | tauri_plugin_window_state::StateFlags::POSITION
+                        | tauri_plugin_window_state::StateFlags::MAXIMIZED,
+                )
+                .build(),
+        )
+        .plugin(
+            tauri_plugin_global_shortcut::Builder::new()
+                .with_handler(|app, _shortcut, event| {
+                    if event.state() == ShortcutState::Pressed {
+                        let result = if app.get_webview_window("overlay").is_some() {
+                            commands::overlay::hide_overlay_window(app)
+                        } else {
+                            commands::overlay::show_overlay_window(app)
+                        };
+                        if let Err(err) = result {
+                            log::warn!("bascule de l'overlay via raccourci clavier echouee: {err}");
+                        }
+                    }
+                })
+                .build(),
+        )
         .manage(AppState::new())
         .invoke_handler(tauri::generate_handler![
             commands::accounts::link_account,
@@ -76,6 +102,14 @@ pub fn run() {
 
             let state = app.state::<AppState>();
             watcher::spawn(app.handle().clone(), state.phase.clone(), state.lcu.clone());
+
+            // Raccourci global (actif meme si le client League a le focus)
+            // pour basculer manuellement l'overlay in-game.
+            let overlay_shortcut =
+                Shortcut::new(Some(Modifiers::CONTROL | Modifiers::SHIFT), Code::KeyO);
+            if let Err(err) = app.global_shortcut().register(overlay_shortcut) {
+                log::warn!("enregistrement du raccourci overlay echoue: {err}");
+            }
 
             // Ouvre/ferme automatiquement l'overlay en fonction de la phase
             // de jeu : visible uniquement pendant une partie en cours. Un

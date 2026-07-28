@@ -116,11 +116,13 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 9 — Personnalisation & notifications
 
-| Feature       | Tâche                                                                      | Statut |
-| ------------- | -------------------------------------------------------------------------- | ------ |
-| Thèmes        | Dark, OLED, Light, couleurs d'accent                                       | ⏳     |
-| Disposition   | Widgets, fenêtres, raccourcis clavier                                      | ⏳     |
-| Notifications | Partie trouvée, champion select, patch, promo, victoire/défaite, objectifs | ⏳     |
+| Feature       | Tâche                                                                      | Statut                                                                                                                                        |
+| ------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Thèmes        | Dark, OLED, Light, couleurs d'accent                                       | ✅ (page Paramètres, persisté via `localStorage`)                                                                                             |
+| Disposition   | Widgets de l'overlay activables/désactivables                              | ✅ (Or & niveau, timers d'objectifs, conseil contextuel — persisté via `localStorage`)                                                        |
+| Disposition   | Position/taille des fenêtres restaurées entre sessions                     | ✅ (`tauri-plugin-window-state`, fenêtre principale + overlay)                                                                                |
+| Disposition   | Raccourcis clavier                                                         | ✅ (raccourci global `Ctrl+Shift+O` pour basculer l'overlay, actif même quand le client League a le focus) ; personnalisation du raccourci ⏳ |
+| Notifications | Partie trouvée, champion select, patch, promo, victoire/défaite, objectifs | ⏳                                                                                                                                            |
 
 ## Backlog / améliorations futures
 
