@@ -30,7 +30,7 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 | Connecteur LCU   | Fallback polling adaptatif si WebSocket indisponible                            | ✅     |
 | Machine à états  | Modélisation des phases (Lobby → EndOfGame)                                     | ✅     |
 | Frontend         | Adaptation automatique de l'UI selon la phase (badge de phase, sync temps réel) | ✅     |
-| Live Client Data | Poller `localhost:2999` pendant la partie                                       | ⏳     |
+| Live Client Data | Poller `localhost:2999` pendant la partie                                       | ✅     |
 
 ## Epic 2 — Comptes & profil
 
@@ -74,13 +74,14 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 5 — Partie en cours
 
-| Feature | Tâche                                              | Statut                                                     |
-| ------- | -------------------------------------------------- | ---------------------------------------------------------- |
-| Overlay | Fenêtre transparente, déplaçable, redimensionnable | 🔄 (fenêtre créée, glisser-déposer et contenu à finaliser) |
-| Overlay | Timers objectifs (dragon/héraut/baron/void)        | ⏳                                                         |
-| Overlay | Or estimé, power spikes                            | ⏳                                                         |
-| Overlay | Conseils contextuels                               | ⏳                                                         |
-| Overlay | Widgets activables/désactivables individuellement  | ⏳                                                         |
+| Feature | Tâche                                                                       | Statut                                                                                                           |
+| ------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Overlay | Fenêtre transparente, déplaçable, redimensionnable                          | ✅ (ouverture/fermeture automatique selon la phase InProgress)                                                   |
+| Overlay | Timers objectifs (dragon/baron/héraut)                                      | ✅ (calculés depuis le flux d'événements Live Client Data + constantes documentées ; void grubs non implémentés) |
+| Overlay | Or (donnée exacte, pas une estimation — fournie par l'API Live Client Data) | ✅                                                                                                               |
+| Overlay | Power spikes détaillés par champion                                         | ⏳ (nécessiterait de croiser stats_engine et courbe de puissance par champion)                                   |
+| Overlay | Conseils contextuels                                                        | ✅ (règles génériques liées au temps de jeu/objectifs, pas encore par champion)                                  |
+| Overlay | Widgets activables/désactivables individuellement                           | ⏳                                                                                                               |
 
 ## Epic 6 — Historique & progression
 

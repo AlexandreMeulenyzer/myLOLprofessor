@@ -6,9 +6,10 @@ mod stats_engine;
 
 use std::sync::Arc;
 
-use tauri::Manager;
+use tauri::{Listener, Manager};
 
 use app_state::AppState;
+use domain::GamePhase;
 use infrastructure::data_dragon::DataDragonClient;
 use infrastructure::db::Database;
 use infrastructure::lcu::watcher;
@@ -45,6 +46,7 @@ pub fn run() {
             commands::game_state::get_game_phase,
             commands::history::get_match_history,
             commands::history::sync_match_history,
+            commands::live_game::get_live_game_snapshot,
             commands::overlay::toggle_overlay_window,
             commands::profile::get_profile,
             commands::riot_api_key::save_riot_api_key,
@@ -68,6 +70,27 @@ pub fn run() {
 
             let state = app.state::<AppState>();
             watcher::spawn(app.handle().clone(), state.phase.clone(), state.lcu.clone());
+
+            // Ouvre/ferme automatiquement l'overlay en fonction de la phase
+            // de jeu : visible uniquement pendant une partie en cours. Un
+            // utilisateur peut toujours la fermer manuellement en cours de
+            // partie (elle ne se rouvrira qu'a la prochaine transition).
+            let overlay_app_handle = app.handle().clone();
+            app.listen(watcher::PHASE_CHANGED_EVENT, move |event| {
+                let Ok(phase) = serde_json::from_str::<GamePhase>(event.payload()) else {
+                    return;
+                };
+
+                let result = if phase == GamePhase::InProgress {
+                    commands::overlay::show_overlay_window(&overlay_app_handle)
+                } else {
+                    commands::overlay::hide_overlay_window(&overlay_app_handle)
+                };
+
+                if let Err(err) = result {
+                    log::warn!("gestion automatique de l'overlay echouee: {err}");
+                }
+            });
 
             // Reactive une cle API Riot deja enregistree lors d'une session
             // precedente (le trousseau OS est la source de verite ; l'etat
