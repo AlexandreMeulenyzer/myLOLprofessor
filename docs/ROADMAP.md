@@ -7,18 +7,18 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 0 — Fondations & qualité
 
-| Feature         | Tâche                                                                                    | Statut                                                  |
-| --------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Scaffold projet | Structure monorepo (`src`, `src-tauri`, `docs`, `assets`, `scripts`, `tests`, `.github`) | ✅                                                      |
-| Scaffold projet | Frontend Vite + React + TypeScript + Tailwind                                            | ✅                                                      |
-| Scaffold projet | Shell Tauri v2 (fenêtre principale + fenêtre overlay)                                    | ✅                                                      |
-| Qualité         | ESLint + Prettier + Husky + lint-staged                                                  | ✅                                                      |
-| Qualité         | Tests unitaires frontend (Vitest)                                                        | ✅ (couverture initiale, a etoffer au fil des features) |
-| Qualité         | Tests unitaires backend (`cargo test`)                                                   | ✅ (couverture initiale, a etoffer au fil des features) |
-| Qualité         | Tests E2E (Playwright)                                                                   | ⏳                                                      |
-| CI/CD           | Pipeline GitHub Actions (lint, test, build)                                              | ⏳                                                      |
-| CI/CD           | Release automatisée (tauri-action, artefacts Windows)                                    | ⏳                                                      |
-| Documentation   | README, ARCHITECTURE, ROADMAP, CONTRIBUTING                                              | ✅                                                      |
+| Feature         | Tâche                                                                                    | Statut                                                                     |
+| --------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Scaffold projet | Structure monorepo (`src`, `src-tauri`, `docs`, `assets`, `scripts`, `tests`, `.github`) | ✅                                                                         |
+| Scaffold projet | Frontend Vite + React + TypeScript + Tailwind                                            | ✅                                                                         |
+| Scaffold projet | Shell Tauri v2 (fenêtre principale + fenêtre overlay)                                    | ✅                                                                         |
+| Qualité         | ESLint + Prettier + Husky + lint-staged                                                  | ✅                                                                         |
+| Qualité         | Tests unitaires frontend (Vitest)                                                        | ✅ (couverture initiale, a etoffer au fil des features)                    |
+| Qualité         | Tests unitaires backend (`cargo test`)                                                   | ✅ (couverture initiale, a etoffer au fil des features)                    |
+| Qualité         | Tests E2E (Playwright)                                                                   | ⏳                                                                         |
+| CI/CD           | Pipeline GitHub Actions (lint, test, build)                                              | ✅                                                                         |
+| CI/CD           | Release automatisée (tauri-action, artefacts Windows/macOS/Linux)                        | ✅ (build en brouillon a chaque tag `v*`, a valider en conditions reelles) |
+| Documentation   | README, ARCHITECTURE, ROADMAP, CONTRIBUTING                                              | ✅                                                                         |
 
 ## Epic 1 — Détection & état du client
 
@@ -47,16 +47,17 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 3 — Champion Select Assistant
 
-| Feature         | Tâche                                                           | Statut |
-| --------------- | --------------------------------------------------------------- | ------ |
-| Moteur de stats | Ingestion de matchs (`match-v5`) en tâche de fond               | ⏳     |
-| Moteur de stats | Agrégation winrate/pickrate/banrate par champion/rôle/elo/patch | ⏳     |
-| Moteur de stats | Agrégation runes/items/ordre de compétences/sorts               | ⏳     |
-| Moteur de stats | Filtrage par elo, région, patch                                 | ⏳     |
-| Assistant       | Détection automatique de l'entrée en champion select            | ⏳     |
-| Assistant       | Recommandations (runes/build/skills/summoners)                  | ⏳     |
-| Assistant       | Contres, synergies, difficulté, astuces (fallback Data Dragon)  | ⏳     |
-| Assistant       | Temps moyen de partie par champion                              | ⏳     |
+| Feature         | Tâche                                                          | Statut                                                                                  |
+| --------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Moteur de stats | Ingestion de matchs (`match-v5`) en tâche de fond              | ✅ (déclenchée manuellement depuis Historique pour l'instant)                           |
+| Moteur de stats | Agrégation winrate/pickrate/banrate par champion/rôle/patch    | ✅ (bucket elo unique "toutes parties collectées" — voir backlog)                       |
+| Moteur de stats | Agrégation runes (keystone)/items/sorts d'invocateur           | ✅                                                                                      |
+| Moteur de stats | Ordre des compétences (skill order)                            | ❌ non disponible via l'API Riot publique (match-v5 n'expose pas le level-up des sorts) |
+| Moteur de stats | Filtrage par elo, région                                       | ⏳ (nécessiterait un lookup de rang par participant, coûteux en rate-limit)             |
+| Assistant       | Détection automatique de l'entrée en champion select           | ✅                                                                                      |
+| Assistant       | Recommandations (runes/sorts/objets)                           | ✅                                                                                      |
+| Assistant       | Contres, synergies, difficulté, astuces (fallback Data Dragon) | 🔄 (difficulté/tags/tips ✅, contres/synergies calculés ⏳)                             |
+| Assistant       | Temps moyen de partie par champion                             | ✅                                                                                      |
 
 ## Epic 4 — Analyse d'équipe
 
