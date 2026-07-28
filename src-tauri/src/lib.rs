@@ -56,7 +56,8 @@ pub fn run() {
             commands::static_data::get_items,
             commands::static_data::get_runes,
             commands::static_data::get_summoner_spells,
-            commands::stats::get_champion_role_stats
+            commands::stats::get_champion_role_stats,
+            commands::team_analysis::get_champ_select_team_analysis
         ])
         .setup(|app| {
             let app_data_dir = app.path().app_data_dir()?;

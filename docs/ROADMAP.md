@@ -61,13 +61,16 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 4 — Analyse d'équipe
 
-| Feature          | Tâche                                                             | Statut |
-| ---------------- | ----------------------------------------------------------------- | ------ |
-| Scan des joueurs | Récupération des 10 puuids via session LCU                        | ⏳     |
-| Scan des joueurs | Rang / WR / pool de champions / forme récente par joueur          | ⏳     |
-| Heuristiques     | Détection d'autofill estimée                                      | ⏳     |
-| Heuristiques     | Score de force, risque, menaces, avantages                        | ⏳     |
-| Composition      | Scaling early/mid/late, teamfight/splitpush, CC, frontline, AP/AD | ⏳     |
+| Feature          | Tâche                                                                      | Statut                                                                                      |
+| ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Scan des joueurs | Récupération des puuids via session LCU (alliés + adversaires si visibles) | ✅                                                                                          |
+| Scan des joueurs | Rang / WR (saison) / maîtrises principales par joueur                      | ✅                                                                                          |
+| Scan des joueurs | Forme récente (N dernières games) et pool de champions détaillé            | ⏳ (nécessiterait de synchroniser l'historique de chaque joueur, coûteux en rate-limit)     |
+| Heuristiques     | Détection d'autofill estimée                                               | ❌ non implémenté (nécessiterait un modèle rôle-par-champion fiable, risque de désinformer) |
+| Heuristiques     | Score de force (MMR estimé moyen par équipe)                               | ✅                                                                                          |
+| Heuristiques     | Risque, menaces, avantages détaillés                                       | ⏳                                                                                          |
+| Composition      | Répartition par tags de champion (Tank/Mage/Marksman...)                   | ✅                                                                                          |
+| Composition      | Scaling early/mid/late, teamfight/splitpush, CC, frontline, AP/AD          | ⏳ (backlog — nécessite un modèle de composition plus riche)                                |
 
 ## Epic 5 — Partie en cours
 

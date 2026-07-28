@@ -96,6 +96,21 @@ impl RiotApiClient {
         }
     }
 
+    pub async fn account_by_puuid(
+        &self,
+        route: RegionalRoute,
+        puuid: &str,
+    ) -> Result<AccountDto, RiotApiError> {
+        self.get_json(
+            route.host(),
+            &format!(
+                "/riot/account/v1/accounts/by-puuid/{}",
+                encode_path_segment(puuid)
+            ),
+        )
+        .await
+    }
+
     pub async fn account_by_riot_id(
         &self,
         route: RegionalRoute,

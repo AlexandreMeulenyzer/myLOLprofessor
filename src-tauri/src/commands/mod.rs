@@ -7,3 +7,4 @@ pub mod profile;
 pub mod riot_api_key;
 pub mod static_data;
 pub mod stats;
+pub mod team_analysis;
