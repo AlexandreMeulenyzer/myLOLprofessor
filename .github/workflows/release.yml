@@ -30,7 +30,7 @@ jobs:
             libsoup-3.0-dev libayatana-appindicator3-dev librsvg2-dev build-essential pkg-config \
             libssl-dev patchelf
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
