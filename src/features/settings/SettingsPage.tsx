@@ -1,9 +1,11 @@
 import { clsx } from "clsx";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/shared/components/ui/Button";
 import { Card } from "@/shared/components/ui/Card";
 import { invoke } from "@/shared/lib/tauri-bridge";
+import { useNotificationSettingsStore } from "@/shared/stores/notification-settings-store";
 import { useOverlaySettingsStore } from "@/shared/stores/overlay-settings-store";
 import { useThemeStore, type AccentColor, type ThemeMode } from "@/shared/stores/theme-store";
 
@@ -11,6 +13,15 @@ const OVERLAY_WIDGETS = [
   { key: "showGoldAndLevel", label: "Or & niveau" },
   { key: "showObjectiveTimers", label: "Timers d'objectifs (Dragon/Baron/Héraut)" },
   { key: "showContextualTip", label: "Conseil contextuel" },
+] as const;
+
+const NOTIFICATION_CATEGORIES = [
+  { key: "queueFound", label: "Partie trouvée" },
+  { key: "championSelect", label: "Entrée en sélection de champion" },
+  { key: "winLoss", label: "Victoire / défaite" },
+  { key: "promotion", label: "Promotion de rang" },
+  { key: "objectiveReached", label: "Objectif atteint" },
+  { key: "patchUpdate", label: "Nouveau patch disponible" },
 ] as const;
 
 const THEMES: { value: ThemeMode; label: string }[] = [
@@ -32,6 +43,7 @@ export function SettingsPage() {
   const setTheme = useThemeStore((state) => state.setTheme);
   const setAccent = useThemeStore((state) => state.setAccent);
   const overlaySettings = useOverlaySettingsStore();
+  const notificationSettings = useNotificationSettingsStore();
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [overlayError, setOverlayError] = useState<string | null>(null);
 
@@ -116,10 +128,33 @@ export function SettingsPage() {
         </div>
       </Card>
 
+      <Card heading="Notifications" glass>
+        <p className="mb-3 text-sm text-slate-400">
+          Notifications système envoyées par Wardstone. Le premier envoi demande la permission du
+          système d'exploitation.
+        </p>
+        <div className="flex flex-col gap-2">
+          {NOTIFICATION_CATEGORIES.map((category) => (
+            <label key={category.key} className="flex items-center gap-2 text-sm text-slate-300">
+              <input
+                type="checkbox"
+                checked={notificationSettings[category.key]}
+                onChange={() => notificationSettings.toggle(category.key)}
+                className="h-4 w-4 rounded border-[var(--color-border-subtle)] accent-[var(--color-accent-500)]"
+              />
+              {category.label}
+            </label>
+          ))}
+        </div>
+      </Card>
+
       <Card heading="Comptes Riot" glass>
         <p className="text-sm text-slate-400">
-          La gestion multi-comptes sera disponible ici une fois l'onboarding implémenté (voir Epic 2
-          de la roadmap).
+          La liaison et la bascule entre comptes Riot se gèrent depuis la page{" "}
+          <Link to="/accounts" className="text-[var(--color-accent-400)] hover:underline">
+            Comptes
+          </Link>
+          .
         </p>
       </Card>
     </div>

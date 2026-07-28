@@ -116,13 +116,17 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 9 — Personnalisation & notifications
 
-| Feature       | Tâche                                                                      | Statut                                                                                                                                        |
-| ------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Thèmes        | Dark, OLED, Light, couleurs d'accent                                       | ✅ (page Paramètres, persisté via `localStorage`)                                                                                             |
-| Disposition   | Widgets de l'overlay activables/désactivables                              | ✅ (Or & niveau, timers d'objectifs, conseil contextuel — persisté via `localStorage`)                                                        |
-| Disposition   | Position/taille des fenêtres restaurées entre sessions                     | ✅ (`tauri-plugin-window-state`, fenêtre principale + overlay)                                                                                |
-| Disposition   | Raccourcis clavier                                                         | ✅ (raccourci global `Ctrl+Shift+O` pour basculer l'overlay, actif même quand le client League a le focus) ; personnalisation du raccourci ⏳ |
-| Notifications | Partie trouvée, champion select, patch, promo, victoire/défaite, objectifs | ⏳                                                                                                                                            |
+| Feature       | Tâche                                                  | Statut                                                                                                                                        |
+| ------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Thèmes        | Dark, OLED, Light, couleurs d'accent                   | ✅ (page Paramètres, persisté via `localStorage`)                                                                                             |
+| Disposition   | Widgets de l'overlay activables/désactivables          | ✅ (Or & niveau, timers d'objectifs, conseil contextuel — persisté via `localStorage`)                                                        |
+| Disposition   | Position/taille des fenêtres restaurées entre sessions | ✅ (`tauri-plugin-window-state`, fenêtre principale + overlay)                                                                                |
+| Disposition   | Raccourcis clavier                                     | ✅ (raccourci global `Ctrl+Shift+O` pour basculer l'overlay, actif même quand le client League a le focus) ; personnalisation du raccourci ⏳ |
+| Notifications | Partie trouvée, entrée en sélection de champion        | ✅ (transitions de phase LCU)                                                                                                                 |
+| Notifications | Victoire / défaite, promotion de rang                  | ✅ (comparaison du profil avant/après chaque fin de partie, compte actif uniquement)                                                          |
+| Notifications | Objectif atteint                                       | ✅ (comparaison de la progression des objectifs après chaque fin de partie)                                                                   |
+| Notifications | Nouveau patch disponible                               | ✅ (comparaison de la version Data Dragon la plus récente à la dernière vue)                                                                  |
+| Notifications | Activables/désactivables par catégorie                 | ✅ (page Paramètres)                                                                                                                          |
 
 ## Backlog / améliorations futures
 

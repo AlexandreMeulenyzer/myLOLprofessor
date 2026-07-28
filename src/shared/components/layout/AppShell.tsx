@@ -1,11 +1,13 @@
 import { Outlet } from "react-router-dom";
 
+import { useNotificationOrchestrator } from "@/features/notifications/useNotificationOrchestrator";
 import { Sidebar } from "@/shared/components/layout/Sidebar";
 import { Topbar } from "@/shared/components/layout/Topbar";
 import { useGamePhaseSync } from "@/shared/hooks/useGamePhaseSync";
 
 export function AppShell() {
   useGamePhaseSync();
+  useNotificationOrchestrator();
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-surface-0)] text-slate-100">
