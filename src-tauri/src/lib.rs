@@ -3,10 +3,16 @@ mod commands;
 mod domain;
 mod infrastructure;
 
+use std::sync::Arc;
+
 use tauri::Manager;
 
 use app_state::AppState;
+use infrastructure::data_dragon::DataDragonClient;
+use infrastructure::db::Database;
 use infrastructure::lcu::watcher;
+use infrastructure::riot_api::RiotApiClient;
+use infrastructure::secure_storage;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -30,12 +36,45 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .manage(AppState::new())
         .invoke_handler(tauri::generate_handler![
+            commands::accounts::link_account,
+            commands::accounts::list_accounts,
+            commands::accounts::remove_account,
+            commands::accounts::set_primary_account,
             commands::game_state::get_game_phase,
-            commands::overlay::toggle_overlay_window
+            commands::history::get_match_history,
+            commands::history::sync_match_history,
+            commands::overlay::toggle_overlay_window,
+            commands::profile::get_profile,
+            commands::riot_api_key::save_riot_api_key,
+            commands::riot_api_key::has_riot_api_key,
+            commands::riot_api_key::delete_riot_api_key,
+            commands::static_data::get_latest_patch_version,
+            commands::static_data::get_champions,
+            commands::static_data::get_champion_detail
         ])
         .setup(|app| {
+            let app_data_dir = app.path().app_data_dir()?;
+            std::fs::create_dir_all(&app_data_dir)?;
+            let database = Database::open(&app_data_dir.join("wardstone.sqlite"))?;
+            app.manage(database);
+            app.manage(DataDragonClient::new(app_data_dir.join("ddragon")));
+
             let state = app.state::<AppState>();
             watcher::spawn(app.handle().clone(), state.phase.clone(), state.lcu.clone());
+
+            // Reactive une cle API Riot deja enregistree lors d'une session
+            // precedente (le trousseau OS est la source de verite ; l'etat
+            // en memoire n'est qu'un cache pour la session en cours).
+            let app_handle = app.handle().clone();
+            tauri::async_runtime::spawn(async move {
+                if let Ok(Some(api_key)) = secure_storage::get_riot_api_key() {
+                    if let Ok(client) = RiotApiClient::new(api_key) {
+                        let state = app_handle.state::<AppState>();
+                        *state.riot_api.write().await = Some(Arc::new(client));
+                    }
+                }
+            });
+
             Ok(())
         })
         .run(tauri::generate_context!())

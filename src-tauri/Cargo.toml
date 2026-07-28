@@ -49,6 +49,7 @@ chrono = { version = "0.4", features = ["serde"] }
 moka = { version = "0.12", features = ["future"] }
 sysinfo = "0.32"
 base64 = "0.22"
+percent-encoding = "2"
 keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
 uuid = { version = "1", features = ["v4", "serde"] }
 
