@@ -26,6 +26,8 @@ pub struct ChampionRoleStats {
     pub avg_deaths: f64,
     pub avg_assists: f64,
     pub avg_game_duration_seconds: f64,
+    pub avg_cs_per_min: f64,
+    pub avg_gold_per_min: f64,
     /// (identifiant d'objet, nombre d'occurrences dans les 6 emplacements),
     /// trie par frequence decroissante.
     pub common_items: Vec<(i64, i64)>,
@@ -71,11 +73,13 @@ pub fn compute_champion_role_stats(
     let mut total_kills = 0i64;
     let mut total_deaths = 0i64;
     let mut total_assists = 0i64;
+    let mut total_cs_per_min = 0.0f64;
+    let mut total_gold_per_min = 0.0f64;
     let mut item_counts: HashMap<i64, i64> = HashMap::new();
     let mut summoner_counts: HashMap<i64, i64> = HashMap::new();
     let mut keystone_counts: HashMap<i64, i64> = HashMap::new();
 
-    for (stats_json, _, _) in &rows {
+    for (stats_json, _, duration_seconds) in &rows {
         let Ok(participant) = serde_json::from_str::<MatchParticipant>(stats_json) else {
             continue;
         };
@@ -83,6 +87,12 @@ pub fn compute_champion_role_stats(
         total_kills += participant.kills;
         total_deaths += participant.deaths;
         total_assists += participant.assists;
+
+        let minutes = (*duration_seconds as f64 / 60.0).max(1.0);
+        total_cs_per_min += (participant.total_minions_killed + participant.neutral_minions_killed)
+            as f64
+            / minutes;
+        total_gold_per_min += participant.gold_earned as f64 / minutes;
 
         for item_id in [
             participant.item0,
@@ -140,6 +150,8 @@ pub fn compute_champion_role_stats(
         avg_deaths: average(total_deaths, games),
         avg_assists: average(total_assists, games),
         avg_game_duration_seconds: average(total_duration, games),
+        avg_cs_per_min: round_one(total_cs_per_min / games as f64),
+        avg_gold_per_min: round_one(total_gold_per_min / games as f64),
         common_items: top_n(item_counts),
         common_summoner_spells: top_n(summoner_counts),
         common_keystones: top_n(keystone_counts),
@@ -179,7 +191,11 @@ fn average(total: i64, games: i64) -> f64 {
     if games == 0 {
         return 0.0;
     }
-    ((total as f64 / games as f64) * 10.0).round() / 10.0
+    round_one(total as f64 / games as f64)
+}
+
+fn round_one(value: f64) -> f64 {
+    (value * 10.0).round() / 10.0
 }
 
 fn top_n(counts: HashMap<i64, i64>) -> Vec<(i64, i64)> {

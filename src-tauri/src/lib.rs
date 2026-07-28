@@ -43,6 +43,7 @@ pub fn run() {
             commands::accounts::remove_account,
             commands::accounts::set_primary_account,
             commands::champion_select::get_current_champ_select_selection,
+            commands::coaching::get_coaching_report,
             commands::game_state::get_game_phase,
             commands::history::get_match_history,
             commands::history::sync_match_history,

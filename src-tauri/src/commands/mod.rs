@@ -1,5 +1,6 @@
 pub mod accounts;
 pub mod champion_select;
+pub mod coaching;
 pub mod game_state;
 pub mod history;
 pub mod live_game;

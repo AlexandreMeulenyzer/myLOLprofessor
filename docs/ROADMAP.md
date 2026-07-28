@@ -101,8 +101,8 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 | --------- | ---------------------------------------------------- | -------------------------------------------------------------------------------- |
 | Objectifs | Définition (rang cible, WR cible, nombre de parties) | ✅                                                                               |
 | Objectifs | Suivi automatique de la progression                  | ✅ (recalculée à chaque consultation de la page, marquage "atteint" automatique) |
-| Coaching  | Analyse post-partie automatique                      | ⏳                                                                               |
-| Coaching  | Points forts / faibles / conseils / priorités        | ⏳                                                                               |
+| Coaching  | Analyse post-partie automatique                      | ✅ (comparaison à la référence locale stats_engine, repli sur seuils génériques) |
+| Coaching  | Points forts / faibles / conseils / priorités        | ✅                                                                               |
 
 ## Epic 8 — Comparaison & recherche
 

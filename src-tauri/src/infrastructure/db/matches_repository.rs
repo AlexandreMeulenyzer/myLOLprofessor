@@ -1,4 +1,4 @@
-use rusqlite::{params, Connection};
+use rusqlite::{params, Connection, OptionalExtension};
 use serde::Serialize;
 
 #[derive(Debug, Clone, Serialize)]
@@ -144,6 +144,43 @@ pub fn count_since(conn: &Connection, puuid: &str, since: &str) -> rusqlite::Res
     )
 }
 
+/// Detail complet d'un match synchronise pour un joueur (utilise par le
+/// coaching post-partie, qui a besoin du champion_id/role/patch/duree en
+/// plus des statistiques brutes).
+pub struct MatchParticipantDetail {
+    pub champion_id: i64,
+    pub team_position: String,
+    pub patch: String,
+    pub duration_seconds: i64,
+    pub win: bool,
+    pub stats_json: String,
+}
+
+pub fn get_participant(
+    conn: &Connection,
+    match_id: &str,
+    puuid: &str,
+) -> rusqlite::Result<Option<MatchParticipantDetail>> {
+    conn.query_row(
+        "SELECT mp.champion_id, mp.team_position, m.patch, m.duration_seconds, mp.win, mp.stats_json
+         FROM match_participants mp
+         JOIN matches m ON m.match_id = mp.match_id
+         WHERE mp.match_id = ?1 AND mp.puuid = ?2",
+        params![match_id, puuid],
+        |row| {
+            Ok(MatchParticipantDetail {
+                champion_id: row.get(0)?,
+                team_position: row.get(1)?,
+                patch: row.get(2)?,
+                duration_seconds: row.get(3)?,
+                win: row.get::<_, i64>(4)? != 0,
+                stats_json: row.get(5)?,
+            })
+        },
+    )
+    .optional()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -199,6 +236,25 @@ mod tests {
 
         let ids = known_match_ids(&conn, "puuid-1").unwrap();
         assert_eq!(ids, vec!["NA1_1".to_string()]);
+    }
+
+    #[test]
+    fn get_participant_returns_match_detail() {
+        let conn = setup();
+        upsert_match_participant(&conn, &sample("NA1_1", "puuid-1")).unwrap();
+
+        let detail = get_participant(&conn, "NA1_1", "puuid-1").unwrap().unwrap();
+        assert_eq!(detail.champion_id, 103);
+        assert_eq!(detail.team_position, "MIDDLE");
+        assert!(detail.win);
+    }
+
+    #[test]
+    fn get_participant_returns_none_for_unknown_match() {
+        let conn = setup();
+        assert!(get_participant(&conn, "NA1_UNKNOWN", "puuid-1")
+            .unwrap()
+            .is_none());
     }
 
     #[test]
