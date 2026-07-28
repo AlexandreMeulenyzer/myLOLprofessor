@@ -97,8 +97,6 @@ impl DataDragonClient {
         .await
     }
 
-    /// Consomme par l'Assistant de Champion Select (Epic 3).
-    #[allow(dead_code)]
     pub async fn items(&self, version: &str, locale: &str) -> Result<ItemsData, DataDragonError> {
         self.fetch_immutable(
             &format!("cdn/{version}/data/{locale}/item.json"),
@@ -107,8 +105,6 @@ impl DataDragonClient {
         .await
     }
 
-    /// Consomme par l'Assistant de Champion Select (Epic 3).
-    #[allow(dead_code)]
     pub async fn runes(
         &self,
         version: &str,
@@ -121,8 +117,6 @@ impl DataDragonClient {
         .await
     }
 
-    /// Consomme par l'Assistant de Champion Select (Epic 3).
-    #[allow(dead_code)]
     pub async fn summoner_spells(
         &self,
         version: &str,

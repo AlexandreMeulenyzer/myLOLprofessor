@@ -79,6 +79,12 @@ pub async fn sync_match_history(
             .join(".");
 
         let stats_json = serde_json::to_string(participant).map_err(|err| err.to_string())?;
+        let banned_champion_ids = match_dto
+            .info
+            .teams
+            .iter()
+            .flat_map(|team| team.bans.iter().map(|ban| ban.champion_id))
+            .collect();
 
         let record = MatchParticipantRecord {
             match_id: match_dto.metadata.match_id,
@@ -86,8 +92,10 @@ pub async fn sync_match_history(
             patch,
             played_at,
             duration_seconds: match_dto.info.game_duration,
+            banned_champion_ids,
             puuid: puuid.clone(),
             champion: participant.champion_name.clone(),
+            champion_id: participant.champion_id,
             team_position: participant.team_position.clone(),
             win: participant.win,
             stats_json,

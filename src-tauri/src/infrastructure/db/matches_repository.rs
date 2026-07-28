@@ -9,8 +9,12 @@ pub struct MatchParticipantRecord {
     pub patch: String,
     pub played_at: String,
     pub duration_seconds: i64,
+    /// Champions bannis dans ce match (identifiants numeriques, toutes
+    /// equipes confondues) — alimente le calcul de banrate du stats engine.
+    pub banned_champion_ids: Vec<i64>,
     pub puuid: String,
     pub champion: String,
+    pub champion_id: i64,
     pub team_position: String,
     pub win: bool,
     /// Statistiques completes du participant (kills/deaths/assists, items,
@@ -26,9 +30,12 @@ pub fn upsert_match_participant(
     conn: &Connection,
     record: &MatchParticipantRecord,
 ) -> rusqlite::Result<()> {
+    let bans_json =
+        serde_json::to_string(&record.banned_champion_ids).unwrap_or_else(|_| "[]".to_string());
+
     conn.execute(
-        "INSERT INTO matches (match_id, queue_id, patch, played_at, duration_seconds)
-         VALUES (?1, ?2, ?3, ?4, ?5)
+        "INSERT INTO matches (match_id, queue_id, patch, played_at, duration_seconds, bans_json)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6)
          ON CONFLICT(match_id) DO NOTHING",
         params![
             record.match_id,
@@ -36,6 +43,7 @@ pub fn upsert_match_participant(
             record.patch,
             record.played_at,
             record.duration_seconds,
+            bans_json,
         ],
     )?;
 
@@ -51,12 +59,13 @@ pub fn upsert_match_participant(
 
     conn.execute(
         "INSERT INTO match_participants
-            (match_id, puuid, champion, team_position, win, stats_json)
-         VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            (match_id, puuid, champion, champion_id, team_position, win, stats_json)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
         params![
             record.match_id,
             record.puuid,
             record.champion,
+            record.champion_id,
             record.team_position,
             record.win as i64,
             record.stats_json,
@@ -140,8 +149,10 @@ mod tests {
             patch: "14.1".to_string(),
             played_at: "2026-01-01T00:00:00Z".to_string(),
             duration_seconds: 1800,
+            banned_champion_ids: vec![1, 2, 3],
             puuid: puuid.to_string(),
             champion: "Ahri".to_string(),
+            champion_id: 103,
             team_position: "MIDDLE".to_string(),
             win: true,
             stats_json: "{}".to_string(),
@@ -175,5 +186,29 @@ mod tests {
 
         let ids = known_match_ids(&conn, "puuid-1").unwrap();
         assert_eq!(ids, vec!["NA1_1".to_string()]);
+    }
+
+    #[test]
+    fn stores_bans_and_champion_id_for_stats_engine() {
+        let conn = setup();
+        upsert_match_participant(&conn, &sample("NA1_1", "puuid-1")).unwrap();
+
+        let bans_json: String = conn
+            .query_row(
+                "SELECT bans_json FROM matches WHERE match_id = 'NA1_1'",
+                [],
+                |row| row.get(0),
+            )
+            .unwrap();
+        assert_eq!(bans_json, "[1,2,3]");
+
+        let champion_id: i64 = conn
+            .query_row(
+                "SELECT champion_id FROM match_participants WHERE match_id = 'NA1_1'",
+                [],
+                |row| row.get(0),
+            )
+            .unwrap();
+        assert_eq!(champion_id, 103);
     }
 }

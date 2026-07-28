@@ -95,6 +95,15 @@ const MIGRATIONS: &[(&str, &str)] = &[
         );
         "#,
     ),
+    (
+        "0007_stats_engine_columns",
+        r#"
+        ALTER TABLE matches ADD COLUMN bans_json TEXT NOT NULL DEFAULT '[]';
+        ALTER TABLE match_participants ADD COLUMN champion_id INTEGER NOT NULL DEFAULT 0;
+        CREATE INDEX idx_match_participants_champion_role
+            ON match_participants(champion_id, team_position);
+        "#,
+    ),
 ];
 
 pub fn run(conn: &mut Connection) -> rusqlite::Result<()> {

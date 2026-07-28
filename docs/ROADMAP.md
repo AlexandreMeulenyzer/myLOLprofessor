@@ -34,16 +34,16 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 2 — Comptes & profil
 
-| Feature           | Tâche                                         | Statut |
-| ----------------- | --------------------------------------------- | ------ |
-| Onboarding        | Saisie Riot ID + région + clé API personnelle | ⏳     |
-| Onboarding        | Validation via `account-v1`                   | ⏳     |
-| Stockage sécurisé | Clé API dans le trousseau OS                  | ⏳     |
-| Multi-comptes     | Ajout / suppression / bascule de compte       | ⏳     |
-| Multi-comptes     | Synchronisation périodique des comptes liés   | ⏳     |
-| Profil            | Rang, LP, WR, niveau, icône                   | ⏳     |
-| Profil            | Champion principal, statistiques agrégées     | ⏳     |
-| Profil            | MMR estimé (heuristique documentée)           | ⏳     |
+| Feature           | Tâche                                         | Statut                                                  |
+| ----------------- | --------------------------------------------- | ------------------------------------------------------- |
+| Onboarding        | Saisie Riot ID + région + clé API personnelle | ✅                                                      |
+| Onboarding        | Validation via `account-v1`                   | ✅                                                      |
+| Stockage sécurisé | Clé API dans le trousseau OS                  | ✅                                                      |
+| Multi-comptes     | Ajout / suppression / bascule de compte       | ✅                                                      |
+| Multi-comptes     | Synchronisation périodique des comptes liés   | ⏳                                                      |
+| Profil            | Rang, LP, WR, niveau, icône                   | ✅ (icône : identifiant récupéré, rendu visuel à faire) |
+| Profil            | Champion principal, statistiques agrégées     | ✅                                                      |
+| Profil            | MMR estimé (heuristique documentée)           | ✅                                                      |
 
 ## Epic 3 — Champion Select Assistant
 
@@ -80,13 +80,13 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 6 — Historique & progression
 
-| Feature    | Tâche                                                     | Statut |
-| ---------- | --------------------------------------------------------- | ------ |
-| Historique | Liste des parties, filtres (champion/queue/résultat/date) | ⏳     |
-| Historique | Recherche                                                 | ⏳     |
-| Graphiques | Progression LP, progression WR                            | ⏳     |
-| Graphiques | Champion préféré, heatmap d'activité                      | ⏳     |
-| Dashboard  | Résumé, dernières parties, top champions                  | ⏳     |
+| Feature    | Tâche                                          | Statut                      |
+| ---------- | ---------------------------------------------- | --------------------------- |
+| Historique | Liste des parties, filtres (champion/résultat) | ✅ (filtre date à ajouter)  |
+| Historique | Recherche                                      | ✅ (recherche par champion) |
+| Graphiques | Progression LP, progression WR                 | ⏳                          |
+| Graphiques | Champion préféré, heatmap d'activité           | ⏳                          |
+| Dashboard  | Résumé, dernières parties, top champions       | ✅                          |
 
 ## Epic 7 — Objectifs & coaching
 

@@ -2,6 +2,7 @@ mod app_state;
 mod commands;
 mod domain;
 mod infrastructure;
+mod stats_engine;
 
 use std::sync::Arc;
 
@@ -40,6 +41,7 @@ pub fn run() {
             commands::accounts::list_accounts,
             commands::accounts::remove_account,
             commands::accounts::set_primary_account,
+            commands::champion_select::get_current_champ_select_selection,
             commands::game_state::get_game_phase,
             commands::history::get_match_history,
             commands::history::sync_match_history,
@@ -50,7 +52,11 @@ pub fn run() {
             commands::riot_api_key::delete_riot_api_key,
             commands::static_data::get_latest_patch_version,
             commands::static_data::get_champions,
-            commands::static_data::get_champion_detail
+            commands::static_data::get_champion_detail,
+            commands::static_data::get_items,
+            commands::static_data::get_runes,
+            commands::static_data::get_summoner_spells,
+            commands::stats::get_champion_role_stats
         ])
         .setup(|app| {
             let app_data_dir = app.path().app_data_dir()?;

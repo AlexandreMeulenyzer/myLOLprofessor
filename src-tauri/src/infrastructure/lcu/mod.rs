@@ -1,3 +1,4 @@
+pub mod champ_select;
 pub mod client;
 pub mod process_discovery;
 pub mod watcher;
@@ -9,11 +10,9 @@ pub use process_discovery::LcuCredentials;
 use tokio::sync::RwLock;
 
 /// Connexion LCU active partagee entre le watcher et les commandes Tauri
-/// (analyse d'equipe, session de champion select...). Les champs sont
-/// consommes par les commandes ajoutees dans les Epics 3/4 (session de
-/// champion select, scan des joueurs).
-#[allow(dead_code)]
+/// (analyse d'equipe, session de champion select...).
 pub struct LcuConnection {
+    #[allow(dead_code)] // consomme par l'analyse d'equipe (Epic 4)
     pub credentials: LcuCredentials,
     pub client: LcuClient,
 }

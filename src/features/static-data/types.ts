@@ -39,3 +39,46 @@ export interface ChampionDetail {
   passive: ChampionPassive;
   spells: ChampionSpell[];
 }
+
+export interface ItemGold {
+  base: number;
+  total: number;
+  sell: number;
+  purchasable: boolean;
+}
+
+export interface ItemDetail {
+  name: string;
+  plaintext: string;
+  description: string;
+  gold: ItemGold;
+  tags: string[];
+}
+
+export interface Rune {
+  id: number;
+  key: string;
+  icon: string;
+  name: string;
+  shortDesc: string;
+  longDesc: string;
+}
+
+export interface RuneSlot {
+  runes: Rune[];
+}
+
+export interface RuneTree {
+  id: number;
+  key: string;
+  icon: string;
+  name: string;
+  slots: RuneSlot[];
+}
+
+export interface SummonerSpellDetail {
+  id: string;
+  name: string;
+  description: string;
+  key: string;
+}
