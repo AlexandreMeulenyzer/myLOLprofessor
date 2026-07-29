@@ -22,7 +22,7 @@ pub type SharedPhase = Arc<Mutex<GamePhase>>;
 /// Legends : decouverte du processus, connexion LCU, puis suivi de la
 /// phase de jeu (WebSocket en priorite, polling REST en repli/redondance).
 pub fn spawn(app: AppHandle, phase: SharedPhase, lcu_state: Arc<LcuState>) {
-    tokio::spawn(async move {
+    tauri::async_runtime::spawn(async move {
         loop {
             let Some(credentials) = discover_lcu_credentials() else {
                 *lcu_state.connection.write().await = None;
@@ -74,7 +74,7 @@ async fn run_session(
     let ws_phase = phase.clone();
     let ws_credentials = credentials.clone();
 
-    let websocket_task = tokio::spawn(async move {
+    let websocket_task = tauri::async_runtime::spawn(async move {
         loop {
             if discover_lcu_credentials().is_none() {
                 break;

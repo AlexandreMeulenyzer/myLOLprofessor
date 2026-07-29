@@ -31,6 +31,12 @@ pub struct LeagueEntrySummary {
     /// Estimation heuristique (Riot ne publie pas de MMR) — voir
     /// `domain::mmr_estimate`. `None` pour les files non classees.
     pub estimated_mmr: Option<i64>,
+    /// Signaux natifs Riot (league-v4), gratuits (aucun appel supplementaire) :
+    /// serie de victoires en cours, "veteran" (100+ parties a ce rang cette
+    /// saison) et "fresh blood" (nouvellement promu a ce rang).
+    pub hot_streak: bool,
+    pub veteran: bool,
+    pub fresh_blood: bool,
 }
 
 #[derive(Debug, Serialize)]
@@ -120,6 +126,9 @@ pub async fn get_profile(
                     &entry.rank,
                     entry.league_points,
                 ),
+                hot_streak: entry.hot_streak,
+                veteran: entry.veteran,
+                fresh_blood: entry.fresh_blood,
                 queue_type: entry.queue_type,
                 tier: entry.tier,
                 rank: entry.rank,

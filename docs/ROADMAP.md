@@ -34,66 +34,74 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 
 ## Epic 2 — Comptes & profil
 
-| Feature           | Tâche                                         | Statut                                                  |
-| ----------------- | --------------------------------------------- | ------------------------------------------------------- |
-| Onboarding        | Saisie Riot ID + région + clé API personnelle | ✅                                                      |
-| Onboarding        | Validation via `account-v1`                   | ✅                                                      |
-| Stockage sécurisé | Clé API dans le trousseau OS                  | ✅                                                      |
-| Multi-comptes     | Ajout / suppression / bascule de compte       | ✅                                                      |
-| Multi-comptes     | Synchronisation périodique des comptes liés   | ⏳                                                      |
-| Profil            | Rang, LP, WR, niveau, icône                   | ✅ (icône : identifiant récupéré, rendu visuel à faire) |
-| Profil            | Champion principal, statistiques agrégées     | ✅                                                      |
-| Profil            | MMR estimé (heuristique documentée)           | ✅                                                      |
+| Feature           | Tâche                                                | Statut                                                                                                                                                |
+| ----------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Onboarding        | Saisie Riot ID + région + clé API personnelle        | ✅                                                                                                                                                    |
+| Onboarding        | Validation via `account-v1`                          | ✅                                                                                                                                                    |
+| Stockage sécurisé | Clé API dans le trousseau OS                         | ✅                                                                                                                                                    |
+| Multi-comptes     | Ajout / suppression / bascule de compte              | ✅                                                                                                                                                    |
+| Multi-comptes     | Synchronisation périodique des comptes liés          | ✅ (cycle toutes les 15 min + déclenchement immédiat en fin de partie, voir `infrastructure::sync` ; dédupliquée pour ne pas polluer l'historique LP) |
+| Profil            | Rang, LP, WR, niveau, icône                          | ✅ (icône d'invocateur et blasons de rang désormais affichés, via Data Dragon/Community Dragon)                                                       |
+| Profil            | Signaux natifs Riot (hot streak/veteran/fresh blood) | ✅ (gratuits, deja recuperes par league-v4, aucun appel API supplementaire)                                                                           |
+| Profil            | Champion principal, statistiques agrégées            | ✅                                                                                                                                                    |
+| Profil            | Rôle préféré (répartition par poste)                 | ✅ (dérivé de l'historique local synchronisé, sans appel API supplémentaire)                                                                          |
+| Profil            | MMR estimé (heuristique documentée)                  | ✅                                                                                                                                                    |
 
 ## Epic 3 — Champion Select Assistant
 
-| Feature         | Tâche                                                          | Statut                                                                                  |
-| --------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Moteur de stats | Ingestion de matchs (`match-v5`) en tâche de fond              | ✅ (déclenchée manuellement depuis Historique pour l'instant)                           |
-| Moteur de stats | Agrégation winrate/pickrate/banrate par champion/rôle/patch    | ✅ (bucket elo unique "toutes parties collectées" — voir backlog)                       |
-| Moteur de stats | Agrégation runes (keystone)/items/sorts d'invocateur           | ✅                                                                                      |
-| Moteur de stats | Ordre des compétences (skill order)                            | ❌ non disponible via l'API Riot publique (match-v5 n'expose pas le level-up des sorts) |
-| Moteur de stats | Filtrage par elo, région                                       | ⏳ (nécessiterait un lookup de rang par participant, coûteux en rate-limit)             |
-| Assistant       | Détection automatique de l'entrée en champion select           | ✅                                                                                      |
-| Assistant       | Recommandations (runes/sorts/objets)                           | ✅                                                                                      |
-| Assistant       | Contres, synergies, difficulté, astuces (fallback Data Dragon) | 🔄 (difficulté/tags/tips ✅, contres/synergies calculés ⏳)                             |
-| Assistant       | Temps moyen de partie par champion                             | ✅                                                                                      |
+| Feature         | Tâche                                                          | Statut                                                                                                                 |
+| --------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Moteur de stats | Ingestion de matchs (`match-v5`) en tâche de fond              | ✅ (automatique — cycle périodique + déclenchement fin de partie ; toujours disponible manuellement depuis Historique) |
+| Moteur de stats | Agrégation winrate/pickrate/banrate par champion/rôle/patch    | ✅ (bucket elo unique "toutes parties collectées" — voir backlog)                                                      |
+| Moteur de stats | Agrégation runes (keystone)/items/sorts d'invocateur           | ✅                                                                                                                     |
+| Moteur de stats | Ordre des compétences (skill order)                            | ❌ non disponible via l'API Riot publique (match-v5 n'expose pas le level-up des sorts)                                |
+| Moteur de stats | Filtrage par elo, région                                       | ⏳ (nécessiterait un lookup de rang par participant, coûteux en rate-limit)                                            |
+| Assistant       | Détection automatique de l'entrée en champion select           | ✅                                                                                                                     |
+| Assistant       | Recommandations (runes/sorts/objets)                           | ✅                                                                                                                     |
+| Assistant       | Contres, synergies, difficulté, astuces (fallback Data Dragon) | 🔄 (difficulté/tags/tips ✅, contres/synergies calculés ⏳)                                                            |
+| Assistant       | Temps moyen de partie par champion                             | ✅                                                                                                                     |
 
 ## Epic 4 — Analyse d'équipe
 
-| Feature          | Tâche                                                                      | Statut                                                                                      |
-| ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Scan des joueurs | Récupération des puuids via session LCU (alliés + adversaires si visibles) | ✅                                                                                          |
-| Scan des joueurs | Rang / WR (saison) / maîtrises principales par joueur                      | ✅                                                                                          |
-| Scan des joueurs | Forme récente (N dernières games) et pool de champions détaillé            | ⏳ (nécessiterait de synchroniser l'historique de chaque joueur, coûteux en rate-limit)     |
-| Heuristiques     | Détection d'autofill estimée                                               | ❌ non implémenté (nécessiterait un modèle rôle-par-champion fiable, risque de désinformer) |
-| Heuristiques     | Score de force (MMR estimé moyen par équipe)                               | ✅                                                                                          |
-| Heuristiques     | Risque, menaces, avantages détaillés                                       | ⏳                                                                                          |
-| Composition      | Répartition par tags de champion (Tank/Mage/Marksman...)                   | ✅                                                                                          |
-| Composition      | Scaling early/mid/late, teamfight/splitpush, CC, frontline, AP/AD          | ⏳ (backlog — nécessite un modèle de composition plus riche)                                |
+| Feature          | Tâche                                                                      | Statut                                                                                                                                                                                         |
+| ---------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scan des joueurs | Récupération des puuids via session LCU (alliés + adversaires si visibles) | ✅                                                                                                                                                                                             |
+| Scan des joueurs | Rang / WR (saison) / maîtrises principales par joueur                      | ✅                                                                                                                                                                                             |
+| Scan des joueurs | Forme récente (N dernières games) et pool de champions détaillé            | ⏳ (nécessiterait de synchroniser l'historique de chaque joueur, coûteux en rate-limit)                                                                                                        |
+| Heuristiques     | Détection "One Trick Pony" (concentration de maîtrise)                     | ✅ (heuristique gratuite basée sur les maîtrises déjà récupérées, sans appel API supplémentaire ; voir seuil `OTP_MASTERY_SHARE_THRESHOLD`)                                                    |
+| Heuristiques     | Hot streak / fresh blood / veteran (smurf potentiel)                       | ✅ (signaux natifs league-v4, gratuits)                                                                                                                                                        |
+| Heuristiques     | Détection d'autofill estimée                                               | ❌ non implémenté (nécessiterait un modèle rôle-par-champion fiable, risque de désinformer)                                                                                                    |
+| Heuristiques     | Score de force (MMR estimé moyen par équipe)                               | ✅                                                                                                                                                                                             |
+| Heuristiques     | Risque, menaces, avantages détaillés                                       | ⏳                                                                                                                                                                                             |
+| Composition      | Répartition par tags de champion (Tank/Mage/Marksman...)                   | ✅                                                                                                                                                                                             |
+| Composition      | Mix de dégâts AD/AP/Mixte, tankiness moyenne d'équipe                      | ✅ (heuristique a partir des champs `info` Data Dragon deja recuperes, voir `composition.ts`)                                                                                                  |
+| Composition      | Engage/peel/teamfight/splitpush/CC détaillés                               | ❌ non implémenté — nécessiterait une base de connaissance par sort curatée à la main (~170 champions), absente de Data Dragon ; risque de désinformer sans elle (même logique que l'autofill) |
 
 ## Epic 5 — Partie en cours
 
-| Feature | Tâche                                                                       | Statut                                                                                                           |
-| ------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Overlay | Fenêtre transparente, déplaçable, redimensionnable                          | ✅ (ouverture/fermeture automatique selon la phase InProgress)                                                   |
-| Overlay | Timers objectifs (dragon/baron/héraut)                                      | ✅ (calculés depuis le flux d'événements Live Client Data + constantes documentées ; void grubs non implémentés) |
-| Overlay | Or (donnée exacte, pas une estimation — fournie par l'API Live Client Data) | ✅                                                                                                               |
-| Overlay | Power spikes détaillés par champion                                         | ⏳ (nécessiterait de croiser stats_engine et courbe de puissance par champion)                                   |
-| Overlay | Conseils contextuels                                                        | ✅ (règles génériques liées au temps de jeu/objectifs, pas encore par champion)                                  |
-| Overlay | Widgets activables/désactivables individuellement                           | ⏳                                                                                                               |
+| Feature | Tâche                                                                       | Statut                                                                                                                                                                        |
+| ------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Overlay | Fenêtre transparente, déplaçable, redimensionnable                          | ✅ (ouverture/fermeture automatique selon la phase InProgress)                                                                                                                |
+| Overlay | Timers objectifs (dragon/baron/héraut)                                      | ✅ (calculés depuis le flux d'événements Live Client Data + constantes documentées ; void grubs non implémentés)                                                              |
+| Overlay | Or (donnée exacte, pas une estimation — fournie par l'API Live Client Data) | ✅                                                                                                                                                                            |
+| Overlay | Tableau des scores en direct (KDA/CS/CS-min par joueur, icônes de champion) | ✅ (Live Client Data pour les 10 joueurs — aucun appel API supplémentaire, données déjà récupérées mais non affichées)                                                        |
+| Overlay | Face-à-face de lane (niveau/CS-min/objets vs l'adversaire direct)           | ✅ (roster de champion select capturé dans un store persisté pour survivre au changement de fenêtre, puis recoupé avec Live Client Data — voir `useChampSelectRosterCapture`) |
+| Overlay | Power spikes détaillés par champion                                         | ⏳ (nécessiterait de croiser stats_engine et courbe de puissance par champion)                                                                                                |
+| Overlay | Conseils contextuels                                                        | ✅ (règles génériques liées au temps de jeu/objectifs, pas encore par champion)                                                                                               |
+| Overlay | Widgets activables/désactivables individuellement                           | ✅ (voir Epic 9 — inclut désormais le tableau des scores)                                                                                                                     |
 
 ## Epic 6 — Historique & progression
 
-| Feature    | Tâche                                                        | Statut                                               |
-| ---------- | ------------------------------------------------------------ | ---------------------------------------------------- |
-| Historique | Liste des parties, filtres (champion/résultat)               | ✅ (filtre date à ajouter)                           |
-| Historique | Recherche                                                    | ✅ (recherche par champion)                          |
-| Graphiques | Progression LP (instantanés à chaque consultation du profil) | ✅                                                   |
-| Graphiques | Progression WR                                               | ⏳ (backlog — dérivable de l'historique synchronisé) |
-| Graphiques | Champion préféré (pool de champions)                         | ✅                                                   |
-| Graphiques | Heatmap d'activité                                           | ⏳                                                   |
-| Dashboard  | Résumé, dernières parties, top champions                     | ✅                                                   |
+| Feature    | Tâche                                                              | Statut                                                                                                       |
+| ---------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| Historique | Liste des parties, filtres (champion/résultat)                     | ✅ (icônes de champion, KDA, CS/min et objets par ligne ; filtre date à ajouter)                             |
+| Historique | Détail complet d'un match (10 joueurs, KDA/dégâts/CS/wards/objets) | ✅ (recupere a la demande via `get_match_detail`, un seul appel API, non persiste — voir `MatchDetailModal`) |
+| Historique | Recherche                                                          | ✅ (recherche par champion)                                                                                  |
+| Graphiques | Progression LP (instantanés à chaque consultation du profil)       | ✅                                                                                                           |
+| Graphiques | Progression WR                                                     | ⏳ (backlog — dérivable de l'historique synchronisé)                                                         |
+| Graphiques | Champion préféré (pool de champions)                               | ✅ (noms + icônes + nombre de parties par barre)                                                             |
+| Graphiques | Heatmap d'activité                                                 | ⏳                                                                                                           |
+| Dashboard  | Résumé, dernières parties, top champions                           | ✅ (icônes de champion partout, y compris "Champion du moment")                                              |
 
 ## Epic 7 — Objectifs & coaching
 
@@ -119,7 +127,7 @@ un statut ✅ ne doit être posé qu'après implémentation réelle et vérifié
 | Feature       | Tâche                                                  | Statut                                                                                                                                        |
 | ------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | Thèmes        | Dark, OLED, Light, couleurs d'accent                   | ✅ (page Paramètres, persisté via `localStorage`)                                                                                             |
-| Disposition   | Widgets de l'overlay activables/désactivables          | ✅ (Or & niveau, timers d'objectifs, conseil contextuel — persisté via `localStorage`)                                                        |
+| Disposition   | Widgets de l'overlay activables/désactivables          | ✅ (Or & niveau, timers d'objectifs, conseil contextuel, tableau des scores, face-à-face de lane — persisté via `localStorage`)               |
 | Disposition   | Position/taille des fenêtres restaurées entre sessions | ✅ (`tauri-plugin-window-state`, fenêtre principale + overlay)                                                                                |
 | Disposition   | Raccourcis clavier                                     | ✅ (raccourci global `Ctrl+Shift+O` pour basculer l'overlay, actif même quand le client League a le focus) ; personnalisation du raccourci ⏳ |
 | Notifications | Partie trouvée, entrée en sélection de champion        | ✅ (transitions de phase LCU)                                                                                                                 |

@@ -36,6 +36,39 @@ export interface MatchParticipantStats {
   item6: number;
 }
 
+export interface MatchDetailParticipant {
+  puuid: string;
+  gameName: string | null;
+  tagLine: string | null;
+  championId: number;
+  championName: string;
+  teamId: number;
+  teamPosition: string;
+  win: boolean;
+  kills: number;
+  deaths: number;
+  assists: number;
+  champLevel: number;
+  goldEarned: number;
+  totalMinionsKilled: number;
+  neutralMinionsKilled: number;
+  visionScore: number;
+  totalDamageDealtToChampions: number;
+  totalDamageTaken: number;
+  wardsPlaced: number;
+  wardsKilled: number;
+  summoner1Id: number;
+  summoner2Id: number;
+  items: number[];
+}
+
+export interface MatchDetail {
+  matchId: string;
+  queueId: number;
+  durationSeconds: number;
+  participants: MatchDetailParticipant[];
+}
+
 export const QUEUE_NAMES: Record<number, string> = {
   420: "Classée Solo/Duo",
   440: "Classée Flex",

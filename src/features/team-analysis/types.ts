@@ -22,6 +22,11 @@ export interface ParticipantAnalysis {
   winratePercent: number | null;
   estimatedMmr: number | null;
   topChampionMasteries: ChampionMasterySummary[];
+  hotStreak: boolean;
+  veteran: boolean;
+  freshBlood: boolean;
+  topChampionMasterySharePercent: number | null;
+  isPlayingTopMasteryChampion: boolean;
 }
 
 export const ROLE_LABELS: Record<string, string> = {

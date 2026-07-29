@@ -1,4 +1,4 @@
-use rusqlite::{params, Connection};
+use rusqlite::{params, Connection, OptionalExtension};
 use serde::Serialize;
 
 pub struct LeagueSnapshotInput<'a> {
@@ -43,6 +43,35 @@ pub struct LeagueSnapshotRecord {
     pub wins: i64,
     pub losses: i64,
     pub captured_at: String,
+}
+
+/// Dernier instantane connu pour une file donnee. Utilise pour eviter
+/// d'enregistrer des instantanes redondants lors des synchronisations
+/// automatiques periodiques (voir `infrastructure::sync`).
+pub fn latest_for_puuid(
+    conn: &Connection,
+    puuid: &str,
+    queue_type: &str,
+) -> rusqlite::Result<Option<LeagueSnapshotRecord>> {
+    conn.query_row(
+        "SELECT tier, rank, league_points, wins, losses, captured_at
+         FROM league_snapshots
+         WHERE puuid = ?1 AND queue_type = ?2
+         ORDER BY captured_at DESC
+         LIMIT 1",
+        params![puuid, queue_type],
+        |row| {
+            Ok(LeagueSnapshotRecord {
+                tier: row.get(0)?,
+                rank: row.get(1)?,
+                league_points: row.get(2)?,
+                wins: row.get(3)?,
+                losses: row.get(4)?,
+                captured_at: row.get(5)?,
+            })
+        },
+    )
+    .optional()
 }
 
 pub fn list_for_puuid(
@@ -153,6 +182,50 @@ mod tests {
         assert_eq!(snapshots.len(), 2);
         assert_eq!(snapshots[0].captured_at, "2026-01-01T00:00:00Z");
         assert_eq!(snapshots[1].rank, "III");
+    }
+
+    #[test]
+    fn latest_for_puuid_returns_the_most_recent_snapshot() {
+        let conn = setup();
+        record_snapshot(
+            &conn,
+            input(
+                "RANKED_SOLO_5x5",
+                "GOLD",
+                "IV",
+                20,
+                10,
+                8,
+                "2026-01-01T00:00:00Z",
+            ),
+        )
+        .unwrap();
+        record_snapshot(
+            &conn,
+            input(
+                "RANKED_SOLO_5x5",
+                "GOLD",
+                "III",
+                5,
+                12,
+                8,
+                "2026-01-05T00:00:00Z",
+            ),
+        )
+        .unwrap();
+
+        let latest = latest_for_puuid(&conn, "puuid-1", "RANKED_SOLO_5x5")
+            .unwrap()
+            .expect("a snapshot should exist");
+        assert_eq!(latest.rank, "III");
+    }
+
+    #[test]
+    fn latest_for_puuid_returns_none_without_snapshots() {
+        let conn = setup();
+        assert!(latest_for_puuid(&conn, "puuid-1", "RANKED_SOLO_5x5")
+            .unwrap()
+            .is_none());
     }
 
     #[test]

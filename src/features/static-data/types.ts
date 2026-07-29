@@ -1,3 +1,10 @@
+export interface ChampionInfo {
+  attack: number;
+  defense: number;
+  magic: number;
+  difficulty: number;
+}
+
 export interface ChampionSummary {
   id: string;
   key: string;
@@ -5,13 +12,7 @@ export interface ChampionSummary {
   title: string;
   tags: string[];
   blurb: string;
-}
-
-export interface ChampionInfo {
-  attack: number;
-  defense: number;
-  magic: number;
-  difficulty: number;
+  info: ChampionInfo;
 }
 
 export interface ChampionPassive {

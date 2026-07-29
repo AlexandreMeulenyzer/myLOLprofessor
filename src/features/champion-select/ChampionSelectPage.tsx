@@ -1,5 +1,6 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import { Card } from "@/shared/components/ui/Card";
+import { RemoteIcon } from "@/shared/components/ui/RemoteIcon";
 import {
   useChampionDetail,
   useChampionsByKey,
@@ -8,6 +9,7 @@ import {
   useRunesById,
   useSummonerSpellsByKey,
 } from "@/features/static-data/hooks";
+import { championIconUrl } from "@/shared/lib/data-dragon-assets";
 import { useGamePhaseStore } from "@/shared/stores/game-phase-store";
 
 import { useChampionRoleStats, useChampSelectSelection } from "./hooks";
@@ -58,6 +60,13 @@ export function ChampionSelectPage() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-5 py-8">
       <div className="flex items-center gap-3">
+        {patchVersion && championSummary && (
+          <RemoteIcon
+            src={championIconUrl(patchVersion, championSummary.id)}
+            alt={championSummary.name}
+            className="h-14 w-14 rounded-full border border-[var(--color-border-subtle)]"
+          />
+        )}
         <div>
           <h1 className="text-2xl font-semibold text-slate-100">
             {championSummary?.name ?? `Champion #${selection.championId}`}

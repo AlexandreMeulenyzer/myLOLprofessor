@@ -13,6 +13,8 @@ const OVERLAY_WIDGETS = [
   { key: "showGoldAndLevel", label: "Or & niveau" },
   { key: "showObjectiveTimers", label: "Timers d'objectifs (Dragon/Baron/Héraut)" },
   { key: "showContextualTip", label: "Conseil contextuel" },
+  { key: "showScoreboard", label: "Tableau des scores (KDA/CS en direct, 10 joueurs)" },
+  { key: "showLaneMatchup", label: "Face-à-face de lane (vs votre adversaire direct)" },
 ] as const;
 
 const NOTIFICATION_CATEGORIES = [

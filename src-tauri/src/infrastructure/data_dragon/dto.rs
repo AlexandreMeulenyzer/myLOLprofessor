@@ -16,6 +16,10 @@ pub struct ChampionSummary {
     pub title: String,
     pub tags: Vec<String>,
     pub blurb: String,
+    /// Deja present dans le champion.json "en masse" (pas seulement dans le
+    /// detail par champion) — utilise par l'analyse de composition d'equipe
+    /// (mix AD/AP, tankiness) sans appel API supplementaire.
+    pub info: ChampionInfo,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

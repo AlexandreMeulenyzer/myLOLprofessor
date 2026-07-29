@@ -86,6 +86,10 @@ pub struct MatchInfo {
 #[serde(rename_all = "camelCase")]
 pub struct MatchParticipant {
     pub puuid: String,
+    #[serde(default)]
+    pub riot_id_game_name: Option<String>,
+    #[serde(default)]
+    pub riot_id_tagline: Option<String>,
     pub champion_name: String,
     pub champion_id: i64,
     #[serde(default)]
@@ -102,6 +106,14 @@ pub struct MatchParticipant {
     pub neutral_minions_killed: i64,
     #[serde(default)]
     pub vision_score: i64,
+    #[serde(default)]
+    pub total_damage_dealt_to_champions: i64,
+    #[serde(default)]
+    pub total_damage_taken: i64,
+    #[serde(default)]
+    pub wards_placed: i64,
+    #[serde(default)]
+    pub wards_killed: i64,
     pub summoner1_id: i64,
     pub summoner2_id: i64,
     pub item0: i64,

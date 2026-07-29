@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
 
+import { useAccountSyncListener } from "@/shared/hooks/useAccountSyncListener";
 import { useThemeStore } from "@/shared/stores/theme-store";
 
 function makeQueryClient(): QueryClient {
@@ -27,12 +28,18 @@ function ThemeEffect() {
   return null;
 }
 
+function AccountSyncEffect() {
+  useAccountSyncListener();
+  return null;
+}
+
 export function AppProviders({ children }: { children: ReactNode }) {
   const [queryClient] = useState(makeQueryClient);
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeEffect />
+      <AccountSyncEffect />
       {children}
     </QueryClientProvider>
   );

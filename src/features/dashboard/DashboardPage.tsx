@@ -5,10 +5,12 @@ import { useMatchHistory } from "@/features/history/hooks";
 import { queueName } from "@/features/history/types";
 import { useProfile } from "@/features/profile/hooks";
 import { QUEUE_LABELS } from "@/features/profile/types";
-import { useLatestPatchVersion } from "@/features/static-data/hooks";
+import { useChampionsById, useLatestPatchVersion } from "@/features/static-data/hooks";
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { Card } from "@/shared/components/ui/Card";
+import { RemoteIcon } from "@/shared/components/ui/RemoteIcon";
+import { championIconUrl } from "@/shared/lib/data-dragon-assets";
 import { useActiveAccountStore } from "@/shared/stores/active-account-store";
 
 export function DashboardPage() {
@@ -17,6 +19,7 @@ export function DashboardPage() {
   const { data: profile } = useProfile(activeAccount?.puuid, activeAccount?.platform);
   const { data: matches } = useMatchHistory(activeAccount?.puuid, 10);
   const { data: patchVersion } = useLatestPatchVersion();
+  const championsById = useChampionsById();
 
   if (!loadingKey && !hasApiKey) {
     return (
@@ -104,7 +107,18 @@ export function DashboardPage() {
 
         <Card heading="Champion du moment" glass>
           {topChampion ? (
-            <div className="text-lg font-semibold text-slate-100">{topChampion}</div>
+            <div className="flex items-center gap-2">
+              {patchVersion && (
+                <RemoteIcon
+                  src={championIconUrl(patchVersion, topChampion)}
+                  alt={championsById.get(topChampion)?.name ?? topChampion}
+                  className="h-8 w-8 rounded-full"
+                />
+              )}
+              <div className="text-lg font-semibold text-slate-100">
+                {championsById.get(topChampion)?.name ?? topChampion}
+              </div>
+            </div>
           ) : (
             <p className="text-sm text-slate-400">—</p>
           )}
@@ -122,18 +136,28 @@ export function DashboardPage() {
           </p>
         ) : (
           <ul className="flex flex-col gap-1.5">
-            {recentForm.slice(0, 5).map((match) => (
-              <li
-                key={match.matchId}
-                className="flex items-center justify-between text-sm text-slate-300"
-              >
-                <span className="flex items-center gap-2">
-                  <Badge tone={match.win ? "win" : "loss"}>{match.win ? "V" : "D"}</Badge>
-                  {match.champion}
-                </span>
-                <span className="text-slate-500">{queueName(match.queueId)}</span>
-              </li>
-            ))}
+            {recentForm.slice(0, 5).map((match) => {
+              const champion = championsById.get(match.champion);
+              return (
+                <li
+                  key={match.matchId}
+                  className="flex items-center justify-between text-sm text-slate-300"
+                >
+                  <span className="flex items-center gap-2">
+                    <Badge tone={match.win ? "win" : "loss"}>{match.win ? "V" : "D"}</Badge>
+                    {patchVersion && (
+                      <RemoteIcon
+                        src={championIconUrl(patchVersion, match.champion)}
+                        alt={champion?.name ?? match.champion}
+                        className="h-6 w-6 rounded-full"
+                      />
+                    )}
+                    {champion?.name ?? match.champion}
+                  </span>
+                  <span className="text-slate-500">{queueName(match.queueId)}</span>
+                </li>
+              );
+            })}
           </ul>
         )}
       </Card>

@@ -2,6 +2,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  LabelList,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -11,6 +12,7 @@ import {
 } from "recharts";
 
 import { useLpHistory } from "@/features/profile/hooks";
+import { useChampionsById } from "@/features/static-data/hooks";
 import { Card } from "@/shared/components/ui/Card";
 
 import type { MatchHistoryEntry } from "./types";
@@ -98,11 +100,15 @@ export function LpProgressionChart({ puuid }: { puuid: string }) {
 const CHAMPION_POOL_LIMIT = 8;
 
 export function ChampionPoolChart({ matches }: { matches: MatchHistoryEntry[] }) {
+  const championsById = useChampionsById();
   const counts = new Map<string, number>();
   matches.forEach((match) => counts.set(match.champion, (counts.get(match.champion) ?? 0) + 1));
 
   const data = [...counts.entries()]
-    .map(([champion, games]) => ({ champion, games }))
+    .map(([champion, games]) => ({
+      champion: championsById.get(champion)?.name ?? champion,
+      games,
+    }))
     .sort((a, b) => b.games - a.games)
     .slice(0, CHAMPION_POOL_LIMIT);
 
@@ -138,7 +144,9 @@ export function ChampionPoolChart({ matches }: { matches: MatchHistoryEntry[] })
               cursor={{ fill: "rgba(255,255,255,0.04)" }}
               formatter={(value) => [`${value} partie(s)`, "Parties jouées"]}
             />
-            <Bar dataKey="games" fill={ACCENT_COLOR} radius={[0, 4, 4, 0]} barSize={14} />
+            <Bar dataKey="games" fill={ACCENT_COLOR} radius={[0, 4, 4, 0]} barSize={14}>
+              <LabelList dataKey="games" position="right" fill="#cbd5e1" fontSize={11} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>

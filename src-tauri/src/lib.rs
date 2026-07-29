@@ -16,6 +16,7 @@ use infrastructure::db::Database;
 use infrastructure::lcu::watcher;
 use infrastructure::riot_api::RiotApiClient;
 use infrastructure::secure_storage;
+use infrastructure::sync;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -71,6 +72,7 @@ pub fn run() {
             commands::champion_select::get_current_champ_select_selection,
             commands::coaching::get_coaching_report,
             commands::game_state::get_game_phase,
+            commands::history::get_match_detail,
             commands::history::get_match_history,
             commands::history::sync_match_history,
             commands::live_game::get_live_game_snapshot,
@@ -102,6 +104,22 @@ pub fn run() {
 
             let state = app.state::<AppState>();
             watcher::spawn(app.handle().clone(), state.phase.clone(), state.lcu.clone());
+
+            // Synchronisation automatique des comptes lies (rang + historique
+            // de matchs), sans action manuelle de l'utilisateur : un cycle
+            // periodique en tache de fond, complete par un declenchement
+            // immediat a chaque fin de partie (voir plus bas).
+            sync::spawn_periodic(app.handle().clone());
+
+            let sync_app_handle = app.handle().clone();
+            app.listen(watcher::PHASE_CHANGED_EVENT, move |event| {
+                let Ok(phase) = serde_json::from_str::<GamePhase>(event.payload()) else {
+                    return;
+                };
+                if phase == GamePhase::EndOfGame {
+                    sync::spawn_post_game(sync_app_handle.clone());
+                }
+            });
 
             // Raccourci global (actif meme si le client League a le focus)
             // pour basculer manuellement l'overlay in-game.

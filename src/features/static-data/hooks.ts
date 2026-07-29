@@ -50,6 +50,16 @@ export function useChampionsByKey() {
   }, [champions]);
 }
 
+/** Map id Data Dragon (ex: "MonkeyKing", utilise par la Live Client Data API) -> ChampionSummary. */
+export function useChampionsById() {
+  const { data: champions } = useChampions();
+  return useMemo(() => {
+    const map = new Map<string, ChampionSummary>();
+    champions?.forEach((champion) => map.set(champion.id, champion));
+    return map;
+  }, [champions]);
+}
+
 export function useItems() {
   return useQuery({
     queryKey: ["static-data", "items"],

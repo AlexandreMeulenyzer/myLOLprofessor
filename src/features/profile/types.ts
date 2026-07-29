@@ -7,6 +7,9 @@ export interface LeagueEntrySummary {
   losses: number;
   winratePercent: number;
   estimatedMmr: number | null;
+  hotStreak: boolean;
+  veteran: boolean;
+  freshBlood: boolean;
 }
 
 export interface ChampionMasterySummary {
