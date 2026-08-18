@@ -35,7 +35,7 @@ native-tls = "0.2"
 tokio-native-tls = "0.3"
 
 # --- Persistence ---
-rusqlite = { version = "0.32", features = ["bundled"] }
+rusqlite = { version = "0.40", features = ["bundled"] }
 
 # --- Serialization ---
 serde = { version = "1.0", features = ["derive"] }
